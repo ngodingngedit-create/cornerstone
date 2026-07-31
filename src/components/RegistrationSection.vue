@@ -2,9 +2,9 @@
   <section id="register" class="registration-section">
     <!-- Main Card Container using Rectangle 9.png background -->
     <div class="registration-card-wrapper">
-      <!-- Title Image (Register.png) -->
+      <!-- Title Image (Register.avif) -->
       <div class="register-header">
-        <img src="/Register.png" alt="REGISTER" class="register-title-img" />
+        <img src="/Register.avif" alt="REGISTER" class="register-title-img" />
       </div>
 
       <!-- Ticket Cards Container -->
@@ -88,7 +88,7 @@ defineEmits(['select-ticket', 'open-tickets'])
 .registration-card-wrapper {
   width: 100%;
   max-width: 1320px;
-  background-image: url('/Rectangle 9.png');
+  background-image: url('/Rectangle 9.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -103,7 +103,7 @@ defineEmits(['select-ticket', 'open-tickets'])
   overflow: hidden;
 }
 
-/* Title Image (Register.png) enlarged */
+/* Title Image (Register.avif) enlarged */
 .register-header {
   width: 100%;
   max-width: 900px;

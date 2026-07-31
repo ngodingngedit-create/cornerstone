@@ -3,7 +3,7 @@
     <div class="nav-container">
       <!-- Logo Image Left -->
       <a href="#" class="logo-link">
-        <img src="/R2C-Main Logo-White 2.png" alt="R2C27 Logo" class="logo-img" />
+        <img src="/R2C-Main Logo-White 2.avif" alt="R2C27 Logo" class="logo-img" />
       </a>
 
       <!-- Desktop Navigation Menu Right -->
@@ -30,7 +30,7 @@
           <div class="mobile-sidebar-panel font-tech">
             <!-- Sidebar Top Header with Close Button -->
             <div class="sidebar-header">
-              <img src="/R2C-Main Logo-White 2.png" alt="R2C27 Logo" class="sidebar-logo" />
+              <img src="/R2C-Main Logo-White 2.avif" alt="R2C27 Logo" class="sidebar-logo" />
               <button class="sidebar-close-btn" @click="mobileMenuOpen = false" aria-label="Close menu">
                 &times;
               </button>
@@ -168,17 +168,16 @@ onUnmounted(() => {
 .mobile-toggle {
   display: none;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.4rem 0.5rem;
-  border-radius: 6px;
+  border: none;
+  padding: 0;
   color: #ffffff;
   cursor: pointer;
-  transition: all 0.2s ease;
+  outline: none;
+  transition: opacity 0.2s ease;
 }
 
 .mobile-toggle:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
+  opacity: 0.8;
 }
 
 @media (max-width: 900px) {

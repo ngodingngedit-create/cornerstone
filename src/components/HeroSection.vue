@@ -1,7 +1,7 @@
 <template>
   <section id="hero" class="hero-section">
     <div class="hero-image-wrapper">
-      <img src="/hero.png" alt="R2C27 Hero Banner - Next Is Now" class="hero-full-img" />
+      <img src="/hero.avif" alt="R2C27 Hero Banner - Next Is Now" class="hero-full-img" />
     </div>
   </section>
 </template>

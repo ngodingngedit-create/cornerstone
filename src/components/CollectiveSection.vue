@@ -26,7 +26,7 @@
               class="collage-item frame-19-box"
               :style="{ transform: `translateY(${parallaxOffset * 2.2}px)` }"
             >
-              <img src="/Frame 19.png" alt="Frame 19" class="frame-img" />
+              <img src="/Frame 19.avif" alt="Frame 19" class="frame-img" />
             </div>
 
             <!-- Frame 20: Pastor Willyem Top Center -->
@@ -34,7 +34,7 @@
               class="collage-item frame-20-box"
               :style="{ transform: `translateY(${parallaxOffset * 0.75}px)` }"
             >
-              <img src="/Frame 20.png" alt="Frame 20" class="frame-img" />
+              <img src="/Frame 20.avif" alt="Frame 20" class="frame-img" />
             </div>
 
             <!-- Frame 17: Singer Bottom Left -->
@@ -42,7 +42,7 @@
               class="collage-item frame-17-box"
               :style="{ transform: `translateY(${parallaxOffset * 1.3}px)` }"
             >
-              <img src="/Frame 17.png" alt="Frame 17" class="frame-img" />
+              <img src="/Frame 17.avif" alt="Frame 17" class="frame-img" />
             </div>
 
             <!-- Frame 18: Stage Crowd Right Full Height -->
@@ -50,7 +50,7 @@
               class="collage-item frame-18-box"
               :style="{ transform: `translateY(${parallaxOffset * 1.8}px)` }"
             >
-              <img src="/Frame 18.png" alt="Frame 18" class="frame-img" />
+              <img src="/Frame 18.avif" alt="Frame 18" class="frame-img" />
             </div>
           </div>
 

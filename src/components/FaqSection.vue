@@ -21,7 +21,7 @@
           </button>
         </div>
 
-        <!-- Outer Frame Box using Rectangle 201.png background image -->
+        <!-- Outer Frame Box using Rectangle 201.avif background image -->
         <div class="outer-border-frame">
           <!-- Accordion Panel Container -->
           <div class="accordion-list">
@@ -213,10 +213,10 @@ const toggleAccordion = (idx) => {
   font-weight: 700;
 }
 
-/* Outer Border Frame using Rectangle 201.png background image */
+/* Outer Border Frame using Rectangle 201.avif background image */
 .outer-border-frame {
   border: none;
-  background-image: url('/Rectangle 201.png');
+  background-image: url('/Rectangle 201.avif');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   padding: 2.2rem 2.5rem 2.5rem;
