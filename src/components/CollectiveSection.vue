@@ -156,17 +156,16 @@ onUnmounted(() => {
 }
 
 .collective-container {
-  max-width: 1680px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.45fr;
+  grid-template-columns: 1fr 1.6fr; /* Adjusted for wider right column */
   align-items: center;
   position: relative;
 }
 
 /* Left Column Styling */
 .collective-left {
-  padding: 3.5rem 2rem 1.5rem 3rem;
+  padding: 3.5rem 1.5vw 1.5rem 3vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -228,7 +227,7 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   align-items: center;
-  padding-left: 1rem;
+  padding-left: 1vw;
   margin-top: 0;
   z-index: 15;
 }

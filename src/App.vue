@@ -136,7 +136,9 @@ const handleSelectTicket = (passData) => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   position: relative;
-  width: 100%;
+  min-height: 500px;
+  overflow: hidden;
 }
 </style>
