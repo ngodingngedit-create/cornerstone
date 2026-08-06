@@ -21,7 +21,7 @@
       <ScheduleSection />
 
       <!-- Speakers Section -->
-      <SpeakersSection />
+      <!-- <SpeakersSection /> -->
 
       <!-- Continuous Background Wrapper for FAQ & Updates Sections -->
       <div class="faq-updates-wrapper">

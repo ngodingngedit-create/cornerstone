@@ -50,7 +50,7 @@
         <div class="ts-left-col">
           <!-- CATEGORY ACCORDIONS (Early Bird & Regular) -->
           <div 
-            v-for="cat in categories" 
+            v-for="cat in visibleCategories" 
             :key="cat.key" 
             class="outer-category-card"
           >
@@ -643,10 +643,15 @@ const categories = ref([
   }
 ])
 
+// Hide the 'Regular' category for now. Re-enable when Regular ticket sales open.
+const visibleCategories = computed(() => {
+  return categories.value.filter(cat => cat.key !== 'regular')
+})
+
 // Flat array of all tickets
 const allTickets = computed(() => {
   const list = []
-  categories.value.forEach(cat => {
+  visibleCategories.value.forEach(cat => {
     cat.tickets.forEach(t => list.push(t))
   })
   return list
@@ -729,7 +734,10 @@ const proceedToFormData = () => {
 <style scoped>
 .ticket-selection-page {
   min-height: 100vh;
-  background-color: #ffffff;
+  background-image: url('/Background 1.avif');
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
   color: #0f172a;
   display: flex;
   flex-direction: column;
@@ -919,8 +927,8 @@ const proceedToFormData = () => {
 
 /* Outer Category Card */
 .outer-category-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #f9f7f7;
+  border: 1px solid #f9f7f7;
   border-radius: 12px;
   padding: 0.9rem 1.05rem;
 }
@@ -972,18 +980,18 @@ const proceedToFormData = () => {
 
 /* CUSTOM TICKET CARD */
 .custom-ticket-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 12px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 12px 24px 12px rgba(0, 0, 0, 0.10);
   transition: all 0.2s ease;
 }
 
 .custom-ticket-card.ticket-is-sold-out {
-  background: #fafafa;
-  border-color: #f1f5f9;
+  background: #f9f7f7;
+  border-color: #f9f7f7;
 }
 
 /* Side Notches */
@@ -992,7 +1000,7 @@ const proceedToFormData = () => {
   top: 50%;
   width: 12px;
   height: 22px;
-  background: #f8fafc;
+  background: #f9f7f7;
   border: 1px solid #cbd5e1;
   transform: translateY(-50%);
   z-index: 2;
@@ -1024,7 +1032,7 @@ const proceedToFormData = () => {
 }
 
 .ticket-is-sold-out .ticket-header-row {
-  background: #fafafa;
+  background: #f9f7f7;
 }
 
 .ticket-title-area {
@@ -1079,7 +1087,7 @@ const proceedToFormData = () => {
   align-items: center;
   gap: 1rem;
   padding-left: 1rem;
-  border-left: 1px solid #f1f5f9;
+  border-left: 1px solid #f9f7f7;
 }
 
 .price-stack {
@@ -1126,16 +1134,16 @@ const proceedToFormData = () => {
 
 /* CARD MIDDLE EXPANDABLE CONTENT - Scaled Down */
 .ticket-middle-content {
-  background: #f8fafc;
+  background: #f9f7f7;
   padding: 0.85rem 1.25rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #f9f7f7;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .ticket-is-sold-out .ticket-middle-content {
-  background: #f8fafc;
+  background: #f9f7f7;
 }
 
 .info-section {
@@ -1171,8 +1179,8 @@ const proceedToFormData = () => {
 }
 
 .ticket-is-sold-out .calendar-badge {
-  background: #f1f5f9;
-  border-color: #e2e8f0;
+  background: #f9f7f7;
+  border-color: #f9f7f7;
 }
 
 .cal-day {
@@ -1212,7 +1220,7 @@ const proceedToFormData = () => {
 
 .divider-line {
   height: 1px;
-  background: #e2e8f0;
+  background: #f9f7f7;
   width: 100%;
 }
 
@@ -1277,9 +1285,9 @@ const proceedToFormData = () => {
 
 /* CARD BOTTOM ROW (+ Tambah Button on Right, Expiry Text on Left) */
 .ticket-bottom-row {
-  background: #f8fafc;
+  background: #f9f7f7;
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #f9f7f7;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1343,7 +1351,7 @@ const proceedToFormData = () => {
 }
 
 .btn-sold-out-disabled {
-  background: #f1f5f9;
+  background: #f9f7f7;
   color: #64748b;
   border: 1px solid #cbd5e1;
   padding: 0.42rem 1.2rem;
@@ -1365,7 +1373,7 @@ const proceedToFormData = () => {
 }
 
 .qty-btn {
-  background: #f1f5f9;
+  background: #f9f7f7;
   border: 1px solid #cbd5e1;
   width: 22px;
   height: 22px;
@@ -1400,7 +1408,7 @@ const proceedToFormData = () => {
   gap: 0.35rem;
   font-size: 0.7rem;
   color: #475569;
-  background: #f1f5f9;
+  background: #f9f7f7;
   border: 1px solid #cbd5e1;
   padding: 0.32rem 0.65rem;
   border-radius: 6px;
@@ -1415,8 +1423,8 @@ const proceedToFormData = () => {
 
 /* Footnote Banner */
 .footnote-banner {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #f9f7f7;
+  border: 1px solid #f9f7f7;
   padding: 0.65rem 0.95rem;
   border-radius: 8px;
   font-size: 0.75rem;
@@ -1432,16 +1440,16 @@ const proceedToFormData = () => {
 
 /* Sidebar Right Outer & Inner Card */
 .outer-sidebar-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #000000;
+  border: 1px solid #000000;
   border-radius: 12px;
   padding: 0.85rem;
 }
 
 .inner-sidebar-card {
-  background: #ffffff;
+  background: #000000;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #000000;
   padding: 1.1rem;
   display: flex;
   flex-direction: column;
@@ -1463,13 +1471,13 @@ const proceedToFormData = () => {
 .sidebar-title {
   font-size: 0.95rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #ffffff;
 }
 
 .btn-clear-selection {
   background: transparent;
   border: none;
-  color: #0f172a;
+  color: #ffffff;
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
@@ -1481,8 +1489,8 @@ const proceedToFormData = () => {
 }
 
 .sidebar-empty-box {
-  background: #ffffff;
-  border: 1.5px dashed #e2e8f0;
+  background: #000000;
+  border: 1.5px dashed #ffffff;
   border-radius: 8px;
   padding: 1.8rem 1rem;
   text-align: center;
@@ -1499,7 +1507,7 @@ const proceedToFormData = () => {
 
 .empty-text {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -1518,7 +1526,7 @@ const proceedToFormData = () => {
   width: 5px;
 }
 .custom-scroll::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f9f7f7;
   border-radius: 4px;
 }
 .custom-scroll::-webkit-scrollbar-thumb {
@@ -1537,7 +1545,7 @@ const proceedToFormData = () => {
   padding: 0.7rem 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #ffffff;
   box-shadow: none;
   transition: background-color 0.15s ease;
 }
@@ -1558,12 +1566,12 @@ const proceedToFormData = () => {
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #f9f7f7;
+  border: 1px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0f172a;
+  color: #000000;
   flex-shrink: 0;
 }
 
@@ -1575,7 +1583,7 @@ const proceedToFormData = () => {
 }
 
 .selected-item-title {
-  color: #0f172a;
+  color: #ffffff;
   font-size: 0.85rem;
   font-weight: 700;
   line-height: 1.2;
@@ -1587,7 +1595,7 @@ const proceedToFormData = () => {
 /* Category badge positioned directly below title */
 .badge-category-mini {
   font-size: 0.68rem;
-  color: #64748b;
+  color: #ffffff;
   font-weight: 500;
   line-height: 1.2;
 }
@@ -1601,7 +1609,7 @@ const proceedToFormData = () => {
 
 .selected-item-subtotal {
   font-weight: 800;
-  color: #0f172a;
+  color: #ffffff;
   font-size: 0.92rem;
   white-space: nowrap;
 }
@@ -1657,7 +1665,7 @@ const proceedToFormData = () => {
 .sheet-drag-pill {
   width: 42px;
   height: 4.5px;
-  background: #e2e8f0;
+  background: #f9f7f7;
   border-radius: 10px;
   margin: 0.3rem auto 0.8rem auto;
 }
@@ -1684,11 +1692,11 @@ const proceedToFormData = () => {
 .mobile-detail-sheet .sidebar-title {
   font-size: 0.95rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #ffffff;
 }
 
 .btn-clear-selection.disabled-text {
-  color: #000000;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.85rem;
   opacity: 1;
@@ -1739,8 +1747,8 @@ const proceedToFormData = () => {
 }
 
 .btn-close-sheet {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  background: #f9f7f7;
+  border: 1px solid #f9f7f7;
   width: 26px;
   height: 26px;
   border-radius: 50%;
@@ -1807,7 +1815,7 @@ const proceedToFormData = () => {
 }
 
 .btn-desktop-buy:hover:not(:disabled) {
-  background: #f1f5f9;
+  background: #f9f7f7;
   transform: translateY(-1px);
 }
 
@@ -1919,7 +1927,7 @@ const proceedToFormData = () => {
 }
 
 .btn-buy-now:hover:not(:disabled) {
-  background: #f1f5f9;
+  background: #f9f7f7;
   transform: translateY(-1px);
 }
 
@@ -2054,7 +2062,7 @@ const proceedToFormData = () => {
     width: 100%;
     padding-left: 0;
     border-left: none;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid #f9f7f7;
     padding-top: 0.4rem;
     justify-content: space-between;
   }

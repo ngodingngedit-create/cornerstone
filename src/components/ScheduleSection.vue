@@ -66,24 +66,26 @@ const activeDay = ref(1)
 
 const day1Schedule = [
   { time: '13.00 - 15.00', title: 'Check-in & Registration' },
-  { time: '13.00 - 15.00', title: 'Welcome & Opening Worship' },
-  { time: '13.00 - 15.00', title: 'Plenary 1A: Why R2C & Why Next Gen?' },
-  { time: '13.00 - 15.00', title: 'Plenary 1B: The Church Needs to Change' },
-  { time: '13.00 - 15.00', title: 'Q&A' },
-  { time: '13.00 - 15.00', title: 'Closing & Announcement' },
-  { time: '13.00 - 15.00', title: 'Break' },
-  { time: '13.00 - 15.00', title: 'Dinner' }
+  { time: '15.00 - 15.30', title: 'Welcome & Opening Worship' },
+  { time: '15.30 - 16.15', title: 'Plenary 1A: Why We Can’t Wait' },
+  { time: '16.15 - 17.00', title: 'Plenary 1B: The Church that Refuses to Drift' },
+  { time: '17.00 - 17.30', title: 'Q&A' },
+  { time: '17.30 - 17.45', title: 'Closing & Announcement' },
+  { time: '17.45 - 18.30', title: 'Break' },
+  { time: '18.30 - 20.30', title: 'Networking Dinner' }
 ]
 
 const day2Schedule = [
-  { time: '13.00 - 15.00', title: 'Check-in & Morning Gathering' },
-  { time: '13.00 - 15.00', title: 'Plenary 2A: Discipling the Next Generation' },
-  { time: '13.00 - 15.00', title: 'Plenary 2B: Empowering Youth Leaders' },
-  { time: '13.00 - 15.00', title: 'Interactive Masterclass Sessions' },
-  { time: '13.00 - 15.00', title: 'Q&A & Panel Discussion' },
-  { time: '13.00 - 15.00', title: 'Grand Finale & Closing' },
-  { time: '13.00 - 15.00', title: 'Break' },
-  { time: '13.00 - 15.00', title: 'Dinner & Fellowship' }
+  { time: '08.30 - 09.00', title: 'Welcome & Opening Worship' },
+  { time: '09.00 - 10.20', title: 'Plenary 2: They’re Not Who You Think They Are' },
+  { time: '10.20 - 10.30', title: 'Stretch Break' },
+  { time: '10.30 - 11.50', title: 'Plenary 3: Ministry for the Next Gen (talkshow)' },
+  { time: '11.50 - 13.20', title: 'Lunch' },
+  { time: '13.20 - 14.40', title: 'Workshop 1(5 Opsi Workshop)' },
+  { time: '14.40 - 15.00', title: 'Stretch Break' },
+  { time: '15.00 - 16.30', title: 'Workshop 2 (5 Opsi Workshop)' },
+  { time: '16.30 - 17.00', title: 'Snack & Networking' },
+  { time: '17.00 - 17.50', title: 'Plenary 4: Now It’s Your Turn' }
 ]
 
 const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : day2Schedule)

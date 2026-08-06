@@ -47,7 +47,7 @@
     <main class="reg-main-container">
       <div v-if="!isSubmitted">
         <!-- Page Title -->
-        <h1 class="page-title font-display">Personal Informasi</h1>
+        <h1 class="page-title font-display">Informasi Pemesan</h1>
 
         <!-- 2-Column Main Layout Grid -->
         <div class="registration-grid">
@@ -56,7 +56,7 @@
 
             <!-- Card 1: Data Pemesan (Buyer Details) -->
             <div class="form-card">
-              <div class="card-header-collapsible" @click="toggleBuyerCard">
+              <div class="card-header-collapsible buyer-card-header" @click="toggleBuyerCard">
                 <span class="card-title font-display">Data Pemesan</span>
                 <svg 
                   class="chevron-icon" 
@@ -74,29 +74,37 @@
 
               <div v-show="isBuyerOpen" class="card-body font-tech">
                 <div class="form-group">
-                  <label class="form-label">Nama Lengkap</label>
+                  <label class="form-label">Nama Lengkap <span class="required-star">*</span></label>
                   <input 
                     type="text" 
                     v-model="buyer.name" 
                     placeholder="Nama Lengkap" 
                     class="form-input"
+                    :class="{ 'input-error': validationErrors.name }"
+                    required
                     @input="syncBuyerDataToFirstParticipant"
                   />
+                  <span v-if="validationErrors.name" class="error-msg-text">Nama Lengkap wajib diisi</span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Email</label>
+                  <label class="form-label">Email <span class="required-star">*</span></label>
                   <input 
                     type="email" 
                     v-model="buyer.email" 
                     placeholder="Contoh: example@example.com" 
                     class="form-input"
+                    :class="{ 'input-error': validationErrors.email }"
+                    required
                     @input="syncBuyerDataToFirstParticipant"
                   />
+                  <span v-if="validationErrors.email" class="error-msg-text">
+                    {{ !buyer.email || !buyer.email.trim() ? 'Email wajib diisi' : 'Format email tidak valid' }}
+                  </span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">No Telepon</label>
+                  <label class="form-label">No Telepon <span class="required-star">*</span></label>
                   <div class="phone-input-group">
                     <select v-model="buyer.countryCode" class="country-code-select">
                       <option value="+62">+62</option>
@@ -109,9 +117,12 @@
                       v-model="buyer.phone" 
                       placeholder="Contoh: 81234567890" 
                       class="form-input phone-input"
+                      :class="{ 'input-error': validationErrors.phone }"
+                      required
                       @input="syncBuyerDataToFirstParticipant"
                     />
                   </div>
+                  <span v-if="validationErrors.phone" class="error-msg-text">No Telepon wajib diisi</span>
                 </div>
               </div>
             </div>
@@ -190,40 +201,49 @@
 
               <div v-show="participant.isOpen" class="card-body font-tech">
                 <div class="form-group">
-                  <label class="form-label">Nama Lengkap</label>
+                  <label class="form-label">Nama Lengkap <span class="required-star">*</span></label>
                   <input 
                     type="text" 
                     v-model="participant.name" 
                     placeholder="Nama Lengkap" 
                     class="form-input"
+                    :class="{ 'input-error': getParticipantError(index, 'name') }"
                     :disabled="participant.useBuyerData"
+                    required
                   />
+                  <span v-if="getParticipantError(index, 'name')" class="error-msg-text">Nama Lengkap wajib diisi</span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Gereja / Church</label>
+                  <label class="form-label">Gereja / Church <span class="required-star">*</span></label>
                   <input 
                     type="text" 
                     v-model="participant.church" 
                     placeholder="Nama Gereja" 
                     class="form-input"
+                    :class="{ 'input-error': getParticipantError(index, 'church') }"
+                    required
                   />
+                  <span v-if="getParticipantError(index, 'church')" class="error-msg-text">Gereja / Church wajib diisi</span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Ministry Role</label>
+                  <label class="form-label">Ministry Role <span class="required-star">*</span></label>
                   <input 
                     type="text" 
                     v-model="participant.ministryRole" 
                     placeholder="Peran Pelayanan (e.g. Youth Leader, Musician, Member)" 
                     class="form-input"
+                    :class="{ 'input-error': getParticipantError(index, 'ministryRole') }"
+                    required
                   />
+                  <span v-if="getParticipantError(index, 'ministryRole')" class="error-msg-text">Ministry Role wajib diisi</span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">No Telepon</label>
+                  <label class="form-label">No Telepon <span class="required-star">*</span></label>
                   <div class="phone-input-group">
-                    <select v-model="participant.countryCode" class="country-code-select" :disabled="participant.useBuyerData">
+                    <select v-model="participant.countryCode" class="country-code-select" :class="{ 'input-error': getParticipantError(index, 'phone') }" :disabled="participant.useBuyerData">
                       <option value="+62">+62</option>
                       <option value="+1">+1</option>
                       <option value="+65">+65</option>
@@ -233,20 +253,28 @@
                       v-model="participant.phone" 
                       placeholder="Contoh: 81234567890" 
                       class="form-input phone-input"
+                      :class="{ 'input-error': getParticipantError(index, 'phone') }"
                       :disabled="participant.useBuyerData"
+                      required
                     />
                   </div>
+                  <span v-if="getParticipantError(index, 'phone')" class="error-msg-text">No Telepon wajib diisi</span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Email</label>
+                  <label class="form-label">Email <span class="required-star">*</span></label>
                   <input 
                     type="email" 
                     v-model="participant.email" 
                     placeholder="Contoh: example@example.com" 
                     class="form-input"
+                    :class="{ 'input-error': getParticipantError(index, 'email') }"
                     :disabled="participant.useBuyerData"
+                    required
                   />
+                  <span v-if="getParticipantError(index, 'email')" class="error-msg-text">
+                    {{ !participant.email || !participant.email.trim() ? 'Email wajib diisi' : 'Format email tidak valid' }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -262,8 +290,8 @@
                 <img src="/Frame 20.avif" alt="Event Poster" class="event-img" />
               </div>
               <div class="event-details font-tech">
-                <div class="event-title font-display">SINILAH OPENSPACE!</div>
-                <div class="event-date">19-20 Feb 2027 • The Hive</div>
+                <div class="event-title font-display">Rooted Relevant Collective</div>
+                <div class="event-date">19–20 Feb 2027 • Cornerstone Bandung, Paskal 23</div>
               </div>
             </div>
 
@@ -525,6 +553,7 @@ const isTableOpen = ref(true)
 const voucherCode = ref('')
 const isSubmitted = ref(false)
 const selectedPeriod = ref('period1')
+const showErrors = ref(false)
 
 const adminFee = 7000
 
@@ -768,7 +797,90 @@ const formatRupiah = (val) => {
   return 'Rp ' + val.toLocaleString('id-ID')
 }
 
+// Mandatory field validation state for Data Pemesan form
+const validationErrors = reactive({
+  name: false,
+  email: false,
+  phone: false
+})
+
+// Validate all mandatory participant (Pemilik Tiket) fields
+const validateParticipant = (p) => {
+  const errors = {
+    name: !p.name || !p.name.trim(),
+    church: !p.church || !p.church.trim(),
+    ministryRole: !p.ministryRole || !p.ministryRole.trim(),
+    phone: !p.phone || !p.phone.trim(),
+    email: !p.email || !p.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email.trim())
+  }
+  return errors
+}
+
+// Returns error state for a participant field
+const getParticipantError = (index, field) => {
+  if (!showErrors.value) return false
+  const p = participants.value[index]
+  if (!p) return false
+  const errors = validateParticipant(p)
+  return !!errors[field]
+}
+
 const handleNextStep = () => {
+  // Reset previous errors
+  validationErrors.name = false
+  validationErrors.email = false
+  validationErrors.phone = false
+
+  showErrors.value = true
+
+  let hasError = false
+
+  // Validate mandatory Data Pemesan fields
+  if (!buyer.name || !buyer.name.trim()) {
+    validationErrors.name = true
+    hasError = true
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!buyer.email || !buyer.email.trim() || !emailPattern.test(buyer.email.trim())) {
+    validationErrors.email = true
+    hasError = true
+  }
+
+  if (!buyer.phone || !buyer.phone.trim()) {
+    validationErrors.phone = true
+    hasError = true
+  }
+
+  if (hasError) {
+    // Open buyer card and scroll to it so user sees the errors
+    isBuyerOpen.value = true
+    const buyerCard = document.querySelector('.form-card .card-header-collapsible')
+    if (buyerCard) {
+      buyerCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    return
+  }
+
+  // Validate mandatory participant (Pemilik Tiket) fields
+  for (const p of participants.value) {
+    const errors = validateParticipant(p)
+    if (errors.name || errors.church || errors.ministryRole || errors.phone || errors.email) {
+      hasError = true
+      break
+    }
+  }
+
+  if (hasError) {
+    // Open first participant card with errors and scroll to it
+    participants.value.forEach((p, i) => { p.isOpen = true })
+    const firstErrorCard = document.querySelector('.form-card .card-header-top-row')
+    if (firstErrorCard) {
+      firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    return
+  }
+
   isSubmitted.value = true
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -991,6 +1103,14 @@ const handleNextStep = () => {
   border-bottom: 1px solid #e5e7eb;
   cursor: pointer;
   user-select: none;
+}
+
+/* Data Pemesan header: text left, accordion chevron to the right on same line */
+.buyer-card-header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .card-header-top-row {
@@ -1224,6 +1344,11 @@ const handleNextStep = () => {
   color: #4b5563;
 }
 
+.required-star {
+  color: #dc2626;
+  font-weight: 700;
+}
+
 .form-input {
   background: #ffffff;
   border: 1px solid #d1d5db;
@@ -1249,6 +1374,23 @@ const handleNextStep = () => {
   background: #f3f4f6;
   color: #6b7280;
   cursor: not-allowed;
+}
+
+.form-input.input-error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.country-code-select.input-error {
+  border-color: #dc2626;
+}
+
+.error-msg-text {
+  display: block;
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
 }
 
 /* Phone input group */

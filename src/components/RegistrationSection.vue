@@ -19,7 +19,7 @@
 
           <div class="card-image-box">
             <img 
-              src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" 
+              src="/image 1.avif" 
               alt="Cheering audience" 
               class="bw-card-img" 
             />
@@ -36,7 +36,7 @@
 
           <div class="card-image-box">
             <img 
-              src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80" 
+              src="/image 2.avif" 
               alt="Concert crowd" 
               class="bw-card-img" 
             />
@@ -210,9 +210,11 @@ defineEmits(['select-ticket', 'open-tickets'])
 }
 
 .bw-card-img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   filter: grayscale(100%) contrast(120%) brightness(95%);
   transition: transform 0.4s ease, filter 0.4s ease;
 }

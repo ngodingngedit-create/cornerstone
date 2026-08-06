@@ -49,16 +49,13 @@
               <!-- Accordion Body Answer with Butter Smooth CSS Grid Animation -->
               <div class="accordion-body-wrapper">
                 <div class="accordion-body-inner font-tech">
-                  <p class="answer-text">{{ item.answer }}</p>
+                  <div class="answer-text" v-html="item.answer"></div>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- SEE MORE Button -->
-          <button class="see-more-btn font-tech">SEE MORE</button>
+          </div>
         </div>
-      </div>
     </div>
   </section>
 </template>
@@ -81,32 +78,112 @@ const faqs = [
   {
     category: 'Tentang R2C',
     question: 'Apa itu R2C?',
-    answer: 'R2C adalah singkatan dari Rooted Relevant Collective, sebuah gathering event yang diselenggarakan oleh Cornerstone Bandung. Melalui R2C, kami rindu untuk memperlengkapi dan memberdayakan gereja-gereja dalam membangun generasi berikutnya, membawa perubahan bagi komunitas, dan berjalan bersama sebagai satu tubuh Kristus. Empowering Churches. Raising the Next Generation. Transforming Communities. Together.'
+    answer: 'R2C adalah singkatan dari <strong>Rooted Relevant Collective</strong>, sebuah gathering event yang diselenggarakan oleh Cornerstone Bandung. Melalui R2C, kami rindu untuk memperlengkapi dan memberdayakan gereja-gereja dalam membangun generasi berikutnya, membawa perubahan bagi komunitas, dan berjalan bersama sebagai satu tubuh Kristus.<br/><br/><em>Empowering Churches. Raising the Next Generation. Transforming Communities. Together.</em>'
   },
   {
     category: 'Tentang R2C',
     question: 'Siapa saja yang dapat mengikuti R2C?',
-    answer: 'Seluruh pemimpin pemuda, pastor, pelayan gereja, profesional muda, mahasiswa, dan jemaat dari berbagai gereja yang rindu membawa dampak positif bagi generasi berikutnya.'
+    answer: 'R2C terbuka untuk para pemimpin gereja, hamba Tuhan, pelayan, aktivis gereja, youth leaders, dan setiap orang yang memiliki kerinduan untuk membangun generasi berikutnya.'
   },
   {
     category: 'Tentang R2C',
     question: 'Apakah R2C hanya untuk gereja tertentu / denominasi tertentu?',
-    answer: 'Tidak, R2C terbuka untuk seluruh gereja dan denominasi di Indonesia. Kami menjunjung tinggi persatuan dalam tubuh Kristus.'
+    answer: 'Tidak. R2C terbuka untuk berbagai gereja dan denominasi. Kami percaya bahwa membangun generasi berikutnya adalah panggilan bersama, dan kami rindu untuk belajar serta bertumbuh bersama sebagai tubuh Kristus.'
+  },
+  {
+    category: 'Tentang R2C',
+    question: 'Bahasa apa yang digunakan selama conference?',
+    answer: 'Seluruh sesi R2C akan dibawakan dalam Bahasa Indonesia. Apabila terdapat sesi dengan bahasa lain, informasi lebih lanjut akan diberikan kepada peserta.'
   },
   {
     category: 'Tentang R2C',
     question: 'Apakah saya bisa mengikuti R2C secara online?',
-    answer: 'Sesi utama R2C dapat disaksikan melalui platform streaming resmi R2C untuk peserta yang memilih tiket versi On-line.'
+    answer: 'Tidak. R2C tahun ini hanya akan diselenggarakan secara onsite (tatap muka). Kami percaya ada sesuatu yang spesial ketika kita dapat berkumpul, belajar, berdiskusi, dan terkoneksi secara langsung. Kami tidak sabar untuk menyambut Anda di R2C!' 
+  },
+  {
+    category: 'Tentang R2C',
+    question: 'Untuk pertanyaan lainnya?',
+    answer: 'Untuk pertanyaan lainnya, Anda dapat menghubungi tim kami.'
   },
   {
     category: 'Jadwal & Transportasi',
-    question: 'Kapan dan di mana R2C 2027 dilaksanakan?',
-    answer: 'R2C 2027 akan diselenggarakan pada tanggal 19 - 20 Februari 2027 bertempat di Cornerstone Bandung, Jawa Barat.'
+    question: 'Kapan dan di mana R2C akan diselenggarakan?',
+    answer: 'R2C akan diselenggarakan pada <strong>19–20 Februari 2027</strong> di <strong>Cornerstone Bandung, Paskal 23</strong>.'
+  },
+  {
+    category: 'Jadwal & Transportasi',
+    question: 'Bagaimana cara menuju venue R2C?',
+    answer: 'Anda dapat menuju Cornerstone Bandung menggunakan beberapa pilihan transportasi seperti: <br/><br/> • Whoosh<br/> • Kereta Api Indonesia (KAI)<br/> • Travel antar kota<br/> • Kendaraan pribadi<br/><br/> Mohon diperhatikan bahwa tidak tersedia layanan shuttle dari Cornerstone Bandung, sehingga peserta dapat mengatur transportasi masing-masing menuju lokasi acara.'
+  },
+  {
+    category: 'Jadwal & Transportasi',
+    question: 'Apakah tersedia akses untuk penyandang disabilitas?',
+    answer: 'Ya, tersedia akses untuk penyandang disabilitas di area venue.'
   },
   {
     category: 'Registrasi & Tiket',
-    question: 'Bagaimana cara melakukan pembelian tiket?',
-    answer: 'Pembelian tiket dapat dilakukan secara langsung melalui tombol REGISTER NOW di situs ini.'
+    question: 'Bagaimana cara melakukan registrasi?',
+    answer: 'Anda dapat melakukan registrasi melalui website: <strong>https://r2c.cornerstone.co.id</strong>.'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Berapa harga tiket R2C?',
+    answer: 'Informasi mengenai harga tiket R2C dapat dilihat melalui halaman registrasi resmi kami <strong>https://r2c.cornerstone.co.id/pricing</strong>.'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Apa saja yang termasuk dalam biaya registrasi?',
+    answer: 'Biaya registrasi mencakup: <br/><br/> • Akses masuk R2C selama 2 hari conference<br/> • Akses ke seluruh sesi conference sesuai tiket<br/> • Akses ke workshop<br/> • Voucher senilai Rp50.000 untuk digunakan di R2C Bazaar<br/> • Makan malam di hari pertama conference'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Apakah tersedia potongan harga atau promo registrasi?',
+    answer: 'Ya. Sebagai penyelenggara, kerinduan kami adalah melihat semakin banyak gereja diperlengkapi dan generasi berikutnya dibangun. Karena itu, kami mendorong setiap gereja untuk membawa serta generasi muda mereka melalui paket bundling khusus: <strong>1 Adult + 1 Youth</strong>.'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Bagaimana cara mendaftar sebagai rombongan gereja?',
+    answer: 'Pada halaman registrasi, Anda dapat memilih jumlah peserta yang ingin didaftarkan untuk mengikuti R2C. Apabila gereja Anda ingin melakukan pendaftaran dalam jumlah besar atau membutuhkan bantuan untuk registrasi rombongan, silakan menghubungi tim kami melalui <strong>rootedrelevantcollective@gmail.com</strong>. Tim kami akan dengan senang hati membantu proses pendaftaran gereja Anda.'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Apakah saya bisa memilih workshop yang ingin saya ikuti?',
+    answer: 'Ya. Peserta akan mendapatkan kesempatan untuk memilih workshop yang tersedia. Informasi mengenai pilihan workshop dan proses pendaftaran akan diinformasikan lebih lanjut kepada peserta terdaftar.'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Apakah tersedia tiket untuk anak-anak?',
+    answer: 'Tiket Youth tersedia untuk peserta mulai dari usia 17 tahun ke atas.'
+  },
+  {
+    category: 'Registrasi & Tiket',
+    question: 'Apakah saya dapat membawa keluarga atau anak?',
+    answer: 'Anda diperbolehkan membawa keluarga, namun mohon diperhatikan bahwa kami tidak menyediakan fasilitas penitipan anak selama acara berlangsung. Kami menyediakan nursing room dengan kapasitas terbatas bagi peserta yang membutuhkan.'
+  },
+  {
+    category: 'Perubahan Dan Pembatalan',
+    question: 'Bagaimana cara mengubah data registrasi saya?',
+    answer: 'Setelah pesanan Anda dikonfirmasi, silakan cek email konfirmasi yang telah dikirimkan untuk informasi detail mengenai registrasi Anda.'
+  },
+  {
+    category: 'Perubahan Dan Pembatalan',
+    question: 'Apakah saya bisa memindahkan tiket saya kepada orang lain?',
+    answer: 'Ya. Jika Anda ingin melakukan perubahan data atau memindahkan registrasi kepada peserta lain, silakan hubungi tim kami paling lambat: <strong>11 Januari 2027</strong>.'
+  },
+  {
+    category: 'Perubahan Dan Pembatalan',
+    question: 'Apakah saya bisa membatalkan registrasi saya?',
+    answer: 'Ya. Pembatalan registrasi dapat dilakukan dengan menghubungi tim kami melalui email paling lambat: <strong>20 Desember 2026</strong>.<br/><br/>Biaya pembatalan sebesar <strong>Rp100.000</strong> per registrasi akan dikenakan.<br/><br/>Mohon diperhatikan:<br/> • Registrasi yang sebelumnya sudah pernah dipindahkan kepada peserta lain tidak dapat diajukan untuk refund.<br/> • Proses refund akan dilakukan melalui transfer bank.'
+  },
+  {
+    category: 'Akomodasi',
+    question: 'Apakah akomodasi sudah termasuk dalam biaya registrasi?',
+    answer: 'Tidak. Akomodasi tidak termasuk dalam biaya registrasi R2C. Setiap peserta bertanggung jawab untuk mengatur penginapan masing-masing selama mengikuti conference. Kami menyarankan Anda untuk melakukan pemesanan lebih awal.'
+  },
+  {
+    category: 'Akomodasi',
+    question: 'Apakah tersedia rekomendasi hotel?',
+    answer: 'Ya. Kami memiliki daftar rekomendasi hotel serta informasi promo khusus yang akan dibagikan oleh tim kami melalui pesan kepada peserta.'
   }
 ]
 
@@ -312,30 +389,8 @@ const toggleAccordion = (idx) => {
   padding: 0 1.6rem 1.4rem;
   font-family: 'Manrope', sans-serif;
   font-size: 0.92rem;
-  line-height: 1.65;
+  line-height: 1.75;
   color: #333333;
-}
-
-/* SEE MORE Button */
-.see-more-btn {
-  background: #ffffff;
-  color: #000000;
-  border: none;
-  border-radius: 50px;
-  padding: 0.6rem 2.4rem;
-  font-family: 'Manrope', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin: 2.2rem auto 0;
-  display: block;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.see-more-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4);
 }
 
 /* Responsive Rules */
