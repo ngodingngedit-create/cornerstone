@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <!-- Right Side: 4 Frame Images Collage Grid -->
+      <!-- Right Side: 4 Frame Images Collage Gid -->
       <div class="collective-right">
         <div class="collage-image-container">
           <div class="collage-absolute-wrapper">
