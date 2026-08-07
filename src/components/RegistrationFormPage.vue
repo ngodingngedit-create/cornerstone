@@ -1993,6 +1993,15 @@ const handleDownload = () => {
   .success-actions {
     flex-direction: column-reverse;
     gap: 0.75rem;
+    width: 100%;
+  }
+
+  .btn-primary-home,
+  .btn-secondary-download {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -2284,6 +2293,46 @@ const handleDownload = () => {
   .btn-selanjutnya {
     padding: 0.42rem 1.1rem;
     font-size: 0.75rem;
+  }
+
+  .success-screen {
+    padding: 2rem 1.25rem;
+    margin: 1.5rem auto;
+    border-radius: 12px;
+  }
+
+  .success-lottie-badge {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+  }
+
+  .success-title {
+    font-size: 1.45rem;
+  }
+
+  .success-desc {
+    font-size: 0.82rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .success-summary {
+    padding: 1rem;
+  }
+
+  .success-summary h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-summary p {
+    font-size: 0.78rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .success-summary p:last-child {
+    margin-bottom: 0;
   }
 }
 </style>
