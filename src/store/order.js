@@ -9,5 +9,7 @@ export const orderStore = reactive({
   ppnType: 'nominal',
   ppn: 0,
   ppnAmount: 0,
-  grandTotal: 0
+  grandTotal: 0,
+  buyerEmail: '',
+  invoiceNumber: ''
 })

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TicketSelectionPage from '../components/TicketSelectionPage.vue'
 import RegistrationFormPage from '../components/RegistrationFormPage.vue'
+import SuccessPage from '../views/SuccessPage.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/transaction',
     name: 'transaction',
     component: RegistrationFormPage
+  },
+  {
+    path: '/success/:invoice',
+    name: 'success',
+    component: SuccessPage
   }
 ]
 

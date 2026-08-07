@@ -1000,6 +1000,10 @@ const submitTransaction = async () => {
     const payload = buildPayload()
     const resp = await createTransaction(payload)
 
+    orderStore.buyerEmail = buyer.email
+    orderStore.invoiceNumber =
+      (resp && resp.data && (resp.data.invoice_id || resp.data.transaction_number || resp.data.id)) || ''
+
     const invoiceUrl =
       resp && resp.data && resp.data.xendit_invoice && resp.data.xendit_invoice.invoice_url
         ? resp.data.xendit_invoice.invoice_url

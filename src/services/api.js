@@ -29,3 +29,24 @@ export async function createTransaction(payload) {
   }
   return json
 }
+
+export async function getTransactionFinish(externalId) {
+  const res = await fetch(toEndpoint(`api/transaction-finish?external_id=${externalId}`), {
+    headers: { Accept: 'application/json' }
+  })
+  let json = {}
+  try {
+    json = await res.json()
+  } catch (e) {
+    json = {}
+  }
+  if (!res.ok) {
+    const msg = json?.message || `Gagal memuat invoice (${res.status})`
+    throw new Error(msg)
+  }
+  return json
+}
+
+export function getTransactionDocumentUrl(invoiceId) {
+  return toEndpoint(`api/transaction-document/${invoiceId}`)
+}
