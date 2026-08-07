@@ -1,5 +1,5 @@
 <template>
-  <div class="registration-page">
+  <div class="registration-page" :class="{ 'is-success-page': isSubmitted }">
     <!-- Header Navbar (Black Bar like Homepage) -->
     <header class="reg-header font-tech">
       <div class="reg-header-container">
@@ -467,22 +467,33 @@
 
       <!-- Submission Success Screen -->
       <div v-else class="success-screen font-tech">
-        <div class="success-badge">✓</div>
-        <h2 class="success-title font-display">PESANAN BERHASIL DIBUAT!</h2>
+        <div ref="lottieContainer" class="success-lottie-badge"></div>
+        <h2 class="success-title font-display">Pendaftaran Berhasil</h2>
         <p class="success-desc">
-          Terima kasih, {{ buyer.name || 'Pemesan' }}. Data pendaftaran untuk {{ participants.length }} tiket telah kami terima.
+          Konfirmasi pendaftaran peserta Rooted Relevant Collective 2027 akan dikirimkan ke email pemesan.
         </p>
 
         <div class="success-summary">
           <h3 class="font-display mb-3">Ringkasan Pendaftaran</h3>
-          <p><strong>Periode Pendaftaran:</strong> {{ pricingCalculation.currentPricing.name }}</p>
+          <p><strong>Tanggal Daftar:</strong> {{ registrationDate }}</p>
+          <p><strong>Jumlah Tiket:</strong> {{ participants.length }}</p>
           <p><strong>Total Pembayaran:</strong> {{ formatRupiah(totalPrice) }}</p>
-          <p><strong>Email Konfirmasi:</strong> {{ buyer.email }}</p>
+          <p><strong>Email Pemesan:</strong> {{ buyer.email }}</p>
         </div>
 
-        <button class="btn-primary-home font-tech" @click="$emit('go-back')">
-          Kembali ke Beranda
-        </button>
+        <div class="success-actions">
+          <button class="btn-secondary-download font-tech" @click="handleDownload">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download
+          </button>
+          <button class="btn-primary-home font-tech" @click="$emit('go-back')">
+            Kembali ke Beranda
+          </button>
+        </div>
       </div>
     </main>
 
@@ -507,7 +518,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
+import lottie from 'lottie-web'
 
 const props = defineProps({
   orderData: {
@@ -884,6 +896,43 @@ const handleNextStep = () => {
   isSubmitted.value = true
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+const lottieContainer = ref(null)
+let lottieInstance = null
+
+const registrationDate = computed(() => {
+  const options = { day: 'numeric', month: 'short', year: 'numeric' }
+  return new Date().toLocaleDateString('id-ID', options)
+})
+
+watch(isSubmitted, (newVal) => {
+  if (newVal) {
+    setTimeout(() => {
+      if (lottieContainer.value) {
+        lottieInstance = lottie.loadAnimation({
+          container: lottieContainer.value,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: '/Animation - 1785947825045.json'
+        })
+      }
+    }, 50)
+  } else if (lottieInstance) {
+    lottieInstance.destroy()
+    lottieInstance = null
+  }
+})
+
+onUnmounted(() => {
+  if (lottieInstance) {
+    lottieInstance.destroy()
+  }
+})
+
+const handleDownload = () => {
+  window.print()
+}
 </script>
 
 <style scoped>
@@ -892,6 +941,13 @@ const handleNextStep = () => {
   background-color: #f8fafc;
   color: #111827;
   padding-bottom: 7rem;
+}
+
+.registration-page.is-success-page {
+  background-image: url('/Background 1.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Header Navbar */
@@ -1900,17 +1956,9 @@ const handleNextStep = () => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.success-badge {
-  width: 60px;
-  height: 60px;
-  background: #16a34a;
-  color: #fff;
-  font-size: 1.8rem;
-  font-weight: bold;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.success-lottie-badge {
+  width: 120px;
+  height: 120px;
   margin: 0 auto 1.5rem;
 }
 
@@ -1927,11 +1975,25 @@ const handleNextStep = () => {
 }
 
 .success-summary {
-  background: #f8fafc;
+  background: #F9F7F7;
   padding: 1.2rem;
   border-radius: 10px;
   text-align: left;
   border: 1px solid #e5e7eb;
+}
+
+.success-actions {
+  margin-top: 2.2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .success-actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
 }
 
 .btn-primary-home {
@@ -1948,6 +2010,59 @@ const handleNextStep = () => {
 
 .btn-primary-home:hover {
   background: #1f2937;
+}
+
+.btn-secondary-download {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  padding: 0.8rem 2.2rem;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary-download:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+@media print {
+  body {
+    background: none !important;
+  }
+  
+  body * {
+    visibility: hidden;
+  }
+  
+  .success-screen,
+  .success-screen * {
+    visibility: visible;
+  }
+  
+  .success-screen {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 600px;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .success-actions {
+    display: none !important;
+  }
 }
 
 /* Responsive Media Queries */
