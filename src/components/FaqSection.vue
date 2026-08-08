@@ -168,12 +168,12 @@ const faqs = [
   {
     category: 'Perubahan Dan Pembatalan',
     question: 'Apakah saya bisa memindahkan tiket saya kepada orang lain?',
-    answer: 'Ya. Jika Anda ingin melakukan perubahan data atau memindahkan registrasi kepada peserta lain, silakan hubungi tim kami paling lambat: <strong>11 Januari 2027</strong>.'
+    answer: 'Ya. Jika Anda ingin melakukan perubahan data atau memindahkan registrasi kepada peserta lain, silakan hubungi tim kami paling lambat: <strong>11 Januari 2027</strong> dan hanya bisa dilakukan <strong>1x perubahan data.</strong>'
   },
   {
     category: 'Perubahan Dan Pembatalan',
     question: 'Apakah saya bisa membatalkan registrasi saya?',
-    answer: 'Ya. Pembatalan registrasi dapat dilakukan dengan menghubungi tim kami melalui email paling lambat: <strong>20 Desember 2026</strong>.<br/><br/>Biaya pembatalan sebesar <strong>Rp100.000</strong> per registrasi akan dikenakan.<br/><br/>Mohon diperhatikan:<br/> • Registrasi yang sebelumnya sudah pernah dipindahkan kepada peserta lain tidak dapat diajukan untuk refund.<br/> • Proses refund akan dilakukan melalui transfer bank.'
+    answer: 'Ya. Pembatalan registrasi dapat dilakukan dengan menghubungi tim kami melalui email atau WhatsApp paling lambat: <strong>20 Desember 2026</strong>.<br/><br/>Biaya pembatalan sebesar <strong>Rp100.000 per registrasi</strong> akan dikenakan.<br/><br/>Mohon diperhatikan:<br/> • Registrasi yang sebelumnya sudah pernah dipindahkan kepada peserta lain tidak dapat diajukan untuk refund.<br/> • Refund hanya bisa diproses & diterima oleh pembeli pertama.<br/> • Proses refund akan dilakukan melalui transfer bank.'
   },
   {
     category: 'Akomodasi',
