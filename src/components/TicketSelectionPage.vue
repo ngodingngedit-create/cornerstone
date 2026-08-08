@@ -3,7 +3,7 @@
     <!-- Header Navbar -->
     <header class="ts-header font-tech">
       <div class="ts-header-container">
-        <a href="#" class="logo-link" @click.prevent="$emit('go-back')">
+        <a href="#" class="logo-link" @click.prevent="$router.push('/')">
           <img src="/R2C-Main Logo-White 2.avif" alt="R2C27 Logo" class="logo-img" />
         </a>
 
@@ -31,11 +31,11 @@
             </div>
 
             <div class="sidebar-links-list">
-              <a href="#" class="sidebar-link" @click.prevent="$emit('go-back'); headerMenuOpen = false">HOME</a>
-              <a href="#collective" class="sidebar-link" @click="$emit('go-back'); headerMenuOpen = false">COLLECTIVE</a>
-              <a href="#agenda" class="sidebar-link" @click="$emit('go-back'); headerMenuOpen = false">PROGRAMS</a>
-              <a href="#speakers" class="sidebar-link" @click="$emit('go-back'); headerMenuOpen = false">SPEAKERS</a>
-              <a href="#faq" class="sidebar-link" @click="$emit('go-back'); headerMenuOpen = false">FAQ</a>
+              <a href="#" class="sidebar-link" @click.prevent="$router.push('/'); headerMenuOpen = false">HOME</a>
+              <a href="#collective" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">COLLECTIVE</a>
+              <a href="#agenda" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">PROGRAMS</a>
+              <a href="#speakers" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">SPEAKERS</a>
+              <a href="#faq" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">FAQ</a>
             </div>
           </div>
         </div>
@@ -44,8 +44,17 @@
 
     <!-- Main Container -->
     <div class="ts-main-container">
+      <!-- Loading / Error States -->
+      <div v-if="loading" class="ts-status-card font-tech">
+        Memuat tiket...
+      </div>
+      <div v-else-if="loadError" class="ts-status-card font-tech error">
+        {{ loadError }}
+        <button class="ts-status-btn" @click="$router.go()">Coba Lagi</button>
+      </div>
+
       <!-- Content Grid: Left (Pass Selection Categories & Cards), Right (Sidebar Summary on Desktop) -->
-      <div class="ts-content-grid">
+      <div v-if="!loading && !loadError" class="ts-content-grid">
         <!-- LEFT COLUMN: Categories & Ticket Cards -->
         <div class="ts-left-col">
           <!-- CATEGORY ACCORDIONS (Early Bird & Regular) -->
@@ -481,9 +490,16 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-const emit = defineEmits(['go-back', 'proceed-to-form'])
+import { getEvent } from '../services/api'
+import { orderStore } from '../store/order'
+
+const router = useRouter()
+
+const loading = ref(true)
+const loadError = ref('')
 
 // Accordion open/close states for categories (open by default)
 const accordionState = reactive({
@@ -504,149 +520,115 @@ const showMobileDetailModal = ref(false)
 const expandedTickets = ref([])
 
 // Structured categories
-const categories = ref([
-  {
-    key: 'early_bird',
-    name: 'Early Bird',
-    dateRange: '9 Aug - 10 Oct 2026',
-    tickets: [
-      {
-        id: 'eb_adult',
-        name: 'Adult',
-        category: 'Early Bird',
-        price: 450000,
-        calDay: 'Sun',
-        calNum: '9',
-        calMonth: 'Aug',
-        validityText: '9 Aug - 10 Oct 2026',
-        expiry: '10 Oktober 2026, 23:59:59 WIB',
-        ageText: 'Adult (≥30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: false
-      },
-      {
-        id: 'eb_youth',
-        name: 'Youth',
-        category: 'Early Bird',
-        price: 450000,
-        calDay: 'Sun',
-        calNum: '9',
-        calMonth: 'Aug',
-        validityText: '9 Aug - 10 Oct 2026',
-        expiry: '10 Oktober 2026, 23:59:59 WIB',
-        ageText: 'Youth (<30 years old)',
-        qty: 0,
-        soldOut: true,
-        requiresBundle: false
-      },
-      {
-        id: 'eb_adult_youth',
-        name: 'Adult + Youth',
-        category: 'Early Bird',
-        price: 700000,
-        calDay: 'Sun',
-        calNum: '9',
-        calMonth: 'Aug',
-        validityText: '9 Aug - 10 Oct 2026',
-        expiry: '10 Oktober 2026, 23:59:59 WIB',
-        ageText: 'Adult (≥30 years old) & Youth (<30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: false
-      },
-      {
-        id: 'eb_extra_youth',
-        name: '+Extra Youth*',
-        category: 'Early Bird',
-        price: 350000,
-        calDay: 'Sun',
-        calNum: '9',
-        calMonth: 'Aug',
-        validityText: '9 Aug - 10 Oct 2026',
-        expiry: '10 Oktober 2026, 23:59:59 WIB',
-        ageText: 'Youth (<30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: true,
-        parentBundleId: 'eb_adult_youth'
-      }
-    ]
-  },
-  {
-    key: 'regular',
-    name: 'Regular',
-    dateRange: '11 Oct 2026 - 18 Feb 2027',
-    tickets: [
-      {
-        id: 'reg_adult',
-        name: 'Adult',
-        category: 'Regular',
-        price: 700000,
-        calDay: 'Sun',
-        calNum: '11',
-        calMonth: 'Oct',
-        validityText: '11 Oct 2026 - 18 Feb 2027',
-        expiry: '18 Februari 2027, 23:59:59 WIB',
-        ageText: 'Adult (≥30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: false
-      },
-      {
-        id: 'reg_youth',
-        name: 'Youth',
-        category: 'Regular',
-        price: 700000,
-        calDay: 'Sun',
-        calNum: '11',
-        calMonth: 'Oct',
-        validityText: '11 Oct 2026 - 18 Feb 2027',
-        expiry: '18 Februari 2027, 23:59:59 WIB',
-        ageText: 'Youth (<30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: false
-      },
-      {
-        id: 'reg_adult_youth',
-        name: 'Adult + Youth',
-        category: 'Regular',
-        price: 900000,
-        calDay: 'Sun',
-        calNum: '11',
-        calMonth: 'Oct',
-        validityText: '11 Oct 2026 - 18 Feb 2027',
-        expiry: '18 Februari 2027, 23:59:59 WIB',
-        ageText: 'Adult (≥30 years old) & Youth (<30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: false
-      },
-      {
-        id: 'reg_extra_youth',
-        name: '+Extra Youth*',
-        category: 'Regular',
-        price: 400000,
-        calDay: 'Sun',
-        calNum: '11',
-        calMonth: 'Oct',
-        validityText: '11 Oct 2026 - 18 Feb 2027',
-        expiry: '18 Februari 2027, 23:59:59 WIB',
-        ageText: 'Youth (<30 years old)',
-        qty: 0,
-        soldOut: false,
-        requiresBundle: true,
-        parentBundleId: 'reg_adult_youth'
-      }
-    ]
-  }
-])
+const categories = ref([])
 
-// Hide the 'Regular' category for now. Re-enable when Regular ticket sales open.
-const visibleCategories = computed(() => {
-  return categories.value.filter(cat => cat.key !== 'regular')
+const isSoldOut = (ticket) => {
+  return Number(ticket.is_soldout) === 1 || Number(ticket.is_finish) === 1
+}
+
+const detitle = (name) => {
+  return String(name)
+    .replace(/^(Early Bird|Regular|Reguler)\s*[-+]?\s*/i, '')
+    .replace(/^\s*\+/, '+')
+    .trim()
+}
+
+const ageTextFor = (name) => {
+  const n = String(name).toLowerCase()
+  if (n.includes('extra youth') || n.includes('+extra')) return 'Youth (<30 years old)'
+  if (n.includes('adult + youth') || n.includes('adult+youth')) {
+    return 'Adult (≥30 years old) & Youth (<30 years old)'
+  }
+  if (n.includes('youth')) return 'Youth (<30 years old)'
+  return 'Adult (≥30 years old)'
+}
+
+const tempoIndex = {
+  'Early Bird': 0,
+  'Regular': 1,
+  'Reguler': 1
+}
+
+onMounted(async () => {
+  try {
+    const event = await getEvent()
+    orderStore.event = event
+
+    const rawTickets = (event.has_event_ticket || []).filter(t => Number(t.is_show) !== 0)
+    const periodMap = {}
+
+    rawTickets.forEach(t => {
+      let period = 'Regular'
+      if (/^Early Bird/i.test(t.name)) period = 'Early Bird'
+      if (/^Reguler/i.test(t.name)) period = 'Regular'
+
+      if (!periodMap[period]) {
+        periodMap[period] = []
+      }
+      periodMap[period].push(t)
+    })
+
+    const rankMap = {
+      'Adult + Youth': 0,
+      'Adult': 1,
+      'Youth': 2,
+      '+Extra Youth': 3
+    }
+
+    const rankCategories = []
+    Object.keys(periodMap).sort((a, b) => tempoIndex[a] - tempoIndex[b]).forEach(period => {
+      const periodTickets = periodMap[period].map(t => {
+        const title = detitle(t.name)
+        const isBundle = /adult \+ youth|adult\+youth/i.test(title)
+        const isExtra = /\+?extra youth/i.test(title)
+        const isYouth = /youth/i.test(title) && !isBundle
+
+        return {
+          id: t.id,
+          eventTicketId: t.id,
+          event_id: t.event_id,
+          name: isExtra ? '+Extra Youth*' : (isBundle ? 'Adult + Youth' : title),
+          category: period,
+          price: Number(t.price) || 0,
+          ticketFee: Number(t.ticket_fee) || 0,
+          calDay: '',
+          calNum: '',
+          calMonth: '',
+          validityText: period,
+          expiry: t.ticket_end || '',
+          ageText: ageTextFor(t.name),
+          qty: 0,
+          soldOut: isSoldOut(t),
+          requiresBundle: isExtra,
+          parentBundleId: null,
+          raw: t
+        }
+      })
+
+      const bundleTicket = periodTickets.find(x => x.name === 'Adult + Youth')
+      periodTickets.forEach(x => {
+        if (x.requiresBundle && bundleTicket) x.parentBundleId = bundleTicket.id
+      })
+
+      periodTickets.sort((a, b) => (rankMap[a.name] ?? 9) - (rankMap[b.name] ?? 9))
+
+      rankCategories.push({
+        key: period.toLowerCase().replace(/\s+/g, '_'),
+        name: period,
+        tickets: periodTickets
+      })
+    })
+
+    categories.value = rankCategories
+  } catch (e) {
+    loadError.value = e.message || 'Gagal memuat data tiket'
+  } finally {
+    loading.value = false
+  }
 })
+
+// Show all loaded ticket categories
+const visibleCategories = computed(() => categories.value)
 
 // Flat array of all tickets
 const allTickets = computed(() => {
@@ -682,13 +664,10 @@ const updateQty = (ticket, newQty) => {
   ticket.qty = targetQty
 
   // Reset extra youth if parent bundle becomes 0
-  if (ticket.id === 'eb_adult_youth' && ticket.qty === 0) {
-    const extra = allTickets.value.find(t => t.id === 'eb_extra_youth')
-    if (extra) extra.qty = 0
-  }
-  if (ticket.id === 'reg_adult_youth' && ticket.qty === 0) {
-    const extra = allTickets.value.find(t => t.id === 'reg_extra_youth')
-    if (extra) extra.qty = 0
+  if (ticket.name === 'Adult + Youth' && ticket.qty === 0) {
+    allTickets.value
+      .filter(t => t.parentBundleId === ticket.id)
+      .forEach(t => { t.qty = 0 })
   }
 }
 
@@ -720,15 +699,51 @@ const grandTotal = computed(() => {
   return allTickets.value.reduce((sum, t) => sum + (t.price * t.qty), 0)
 })
 
+const computeAdminFee = () => {
+  return selectedTickets.value.reduce((sum, t) => sum + ((Number(t.ticketFee) || 0) * t.qty), 0)
+}
+
+const computePpnType = () => {
+  return (orderStore.event && orderStore.event.ppn_type) || 'nominal'
+}
+
+const computePpn = () => {
+  return orderStore.event ? Number(orderStore.event.ppn) || 0 : 0
+}
+
+const computePpnAmount = () => {
+  const subtotal = subtotalPrice.value
+  if (computePpnType() === 'percentage') {
+    return Math.round((subtotal * computePpn()) / 100)
+  }
+  return computePpn()
+}
+
+const subtotalPrice = computed(() => {
+  return allTickets.value.reduce((sum, t) => sum + (t.price * t.qty), 0)
+})
+
 const proceedToFormData = () => {
   if (totalQuantity.value > 0) {
-    emit('proceed-to-form', {
-      selectedTickets: selectedTickets.value,
-      totalQuantity: totalQuantity.value,
-      grandTotal: grandTotal.value
-    })
+    orderStore.event = orderStore.event || null
+    orderStore.selectedTickets = selectedTickets.value.map(t => ({
+      ...t,
+      qty: t.qty,
+      subtotal: t.price * t.qty
+    }))
+    orderStore.totalQuantity = totalQuantity.value
+    orderStore.subtotal = subtotalPrice.value
+    orderStore.adminFee = computeAdminFee()
+    orderStore.ppnType = computePpnType()
+    orderStore.ppn = computePpn()
+    orderStore.ppnAmount = computePpnAmount()
+    orderStore.grandTotal = subtotalPrice.value + orderStore.adminFee + orderStore.ppnAmount
+
+    router.push('/transaction')
   }
 }
+
+const handleBuyTickets = proceedToFormData
 </script>
 
 <style scoped>
@@ -910,6 +925,35 @@ const proceedToFormData = () => {
   grid-template-columns: 1fr 340px;
   gap: 1rem;
   align-items: start;
+}
+
+/* Loading / error status banner */
+.ts-status-card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: #475569;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.ts-status-card.error {
+  color: #dc2626;
+}
+
+.ts-status-btn {
+  display: block;
+  margin: 1rem auto 0;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1.6rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
 }
 
 .ts-left-col {

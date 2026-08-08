@@ -4,7 +4,7 @@
     <header class="reg-header font-tech">
       <div class="reg-header-container">
         <!-- Logo Image Left (Matching Homepage) -->
-        <a href="#" class="logo-link" @click.prevent="$emit('go-back')">
+        <a href="#" class="logo-link" @click.prevent="$router.push('/')">
           <img src="/R2C-Main Logo-White 2.avif" alt="R2C27 Logo" class="logo-img" />
         </a>
 
@@ -32,11 +32,11 @@
             </div>
 
             <div class="sidebar-links-list">
-              <a href="#" class="sidebar-link" @click.prevent="$emit('go-home'); headerMenuOpen = false">HOME</a>
-              <a href="#collective" class="sidebar-link" @click="$emit('go-home'); headerMenuOpen = false">COLLECTIVE</a>
-              <a href="#agenda" class="sidebar-link" @click="$emit('go-home'); headerMenuOpen = false">PROGRAMS</a>
-              <a href="#speakers" class="sidebar-link" @click="$emit('go-home'); headerMenuOpen = false">SPEAKERS</a>
-              <a href="#faq" class="sidebar-link" @click="$emit('go-home'); headerMenuOpen = false">FAQ</a>
+              <a href="#" class="sidebar-link" @click.prevent="$router.push('/'); headerMenuOpen = false">HOME</a>
+              <a href="#collective" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">COLLECTIVE</a>
+              <a href="#agenda" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">PROGRAMS</a>
+              <a href="#speakers" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">SPEAKERS</a>
+              <a href="#faq" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">FAQ</a>
             </div>
           </div>
         </div>
@@ -48,6 +48,11 @@
       <div v-if="!isSubmitted">
         <!-- Page Title -->
         <h1 class="page-title font-display">Informasi Pemesan</h1>
+
+        <!-- Submission Error Banner -->
+        <div v-if="submitError" class="submit-error-banner font-tech">
+          {{ submitError }}
+        </div>
 
         <!-- 2-Column Main Layout Grid -->
         <div class="registration-grid">
@@ -212,6 +217,17 @@
                     required
                   />
                   <span v-if="getParticipantError(index, 'name')" class="error-msg-text">Nama Lengkap wajib diisi</span>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Usia <span class="required-star">*</span></label>
+                  <div class="select-wrapper">
+                    <select v-model="participant.ageRange" class="form-select">
+                      <option value="Adult (≥30 years old)">Adult &gt;30 Years Old</option>
+                      <option value="Youth (<30 years old)">Youth &lt;30 Years Old</option>
+                    </select>
+                    <span class="select-arrow">&#9662;</span>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -481,6 +497,7 @@
           <p><strong>Email Pemesan:</strong> {{ buyer.email }}</p>
         </div>
 
+<<<<<<< HEAD
         <div class="success-actions">
           <button class="btn-secondary-download font-tech" @click="handleDownload">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
@@ -494,6 +511,11 @@
             Kembali ke Beranda
           </button>
         </div>
+=======
+        <button class="btn-primary-home font-tech" @click="$router.push('/')">
+          Kembali ke Beranda
+        </button>
+>>>>>>> 2dd260187eca866ac3f02798ff50e24872ba774b
       </div>
     </main>
 
@@ -509,8 +531,8 @@
         </div>
 
         <!-- Right Side: Action Button -->
-        <button class="btn-selanjutnya font-tech" @click="handleNextStep">
-          Selanjutnya
+        <button class="btn-selanjutnya font-tech" :disabled="submitting" @click="handleNextStep">
+          {{ submitting ? 'Memproses...' : 'Selanjutnya' }}
         </button>
       </div>
     </div>
@@ -519,16 +541,13 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import lottie from 'lottie-web'
 
-const props = defineProps({
-  orderData: {
-    type: Object,
-    default: null
-  }
-})
+import { orderStore } from '../store/order'
+import { createTransaction } from '../services/api'
 
-const emit = defineEmits(['go-back', 'go-home'])
+const router = useRouter()
 
 // 15-Minute Countdown Timer (15 * 60 = 900 seconds)
 const timeLeft = ref(15 * 60)
@@ -567,27 +586,15 @@ const isSubmitted = ref(false)
 const selectedPeriod = ref('period1')
 const showErrors = ref(false)
 
-const adminFee = 7000
+const adminFee = orderStore.adminFee
+const submitting = ref(false)
+const submitError = ref('')
 
-// Exact Pricing Table according to image
-const PRICING_TABLE = {
-  period1: {
-    id: 'period1',
-    name: '9 Aug - 10 Oct 2026',
-    adultPrice: 450000,
-    youthPrice: 450000,
-    bundlePrice: 700000,     // 1 adult + 1 youth (2 persons)
-    extraYouthPrice: 350000  // 1 youth (requires bundle)
-  },
-  period2: {
-    id: 'period2',
-    name: '11 Oct 2026 - 18 Feb 2027',
-    adultPrice: 700000,
-    youthPrice: 700000,
-    bundlePrice: 900000,     // 1 adult + 1 youth (2 persons)
-    extraYouthPrice: 400000  // 1 youth (requires bundle)
-  }
-}
+// Exact Pricing Table built from the selected API tickets. Re-enable when Regular ticket sales open.
+const PRICING_TABLE = reactive({
+  period1: { id: 'period1', name: 'Early Bird', adultPrice: 0, youthPrice: 0, bundlePrice: 0, extraYouthPrice: 0 },
+  period2: { id: 'period2', name: 'Regular', adultPrice: 0, youthPrice: 0, bundlePrice: 0, extraYouthPrice: 0 }
+})
 
 // Buyer details
 const buyer = reactive({
@@ -600,7 +607,7 @@ const buyer = reactive({
 // Participant details list
 const participants = ref([])
 
-const createEmptyParticipant = (ageRange = 'Adult (≥30 years old)', isOpen = true) => ({
+const createEmptyParticipant = (ageRange = 'Adult (≥30 years old)', isOpen = true, eventTicketId = null) => ({
   name: '',
   church: '',
   ministryRole: '',
@@ -609,34 +616,60 @@ const createEmptyParticipant = (ageRange = 'Adult (≥30 years old)', isOpen = t
   countryCode: '+62',
   ageRange,
   isOpen,
-  useBuyerData: false
+  useBuyerData: false,
+  eventTicketId
 })
 
-// Initialize participants based on passed orderData
+// Initialize participants & pricing from the selected tickets in the order store
 onMounted(() => {
-  if (props.orderData && props.orderData.selectedTickets && props.orderData.selectedTickets.length > 0) {
-    const list = []
-    props.orderData.selectedTickets.forEach(ticket => {
-      for (let i = 0; i < ticket.qty; i++) {
-        const id = ticket.id.toLowerCase()
-        if (id.includes('adult_youth')) {
-          // 1 bundle consists of 1 Adult and 1 Youth
-          list.push(createEmptyParticipant('Adult (≥30 years old)', list.length === 0))
-          list.push(createEmptyParticipant('Youth (<30 years old)', false))
-        } else if (id.includes('youth')) {
-          list.push(createEmptyParticipant('Youth (<30 years old)', list.length === 0))
-        } else {
-          list.push(createEmptyParticipant('Adult (≥30 years old)', list.length === 0))
-        }
-      }
-    })
-    participants.value = list
+  if (!orderStore.event && (!orderStore.selectedTickets || orderStore.selectedTickets.length === 0)) {
+    router.push('/')
+    return
   }
+
+  // Build PRICING_TABLE from the live event tickets
+  const selectedCats = new Set(orderStore.selectedTickets.map(t => t.category))
+  let period = 'period1'
+  ;(orderStore.event.has_event_ticket || []).forEach(t => {
+    const isEarly = /^Early Bird/i.test(t.name)
+    const pKey = isEarly ? 'period1' : 'period2'
+    const name = t.name.toLowerCase()
+    if (/adult ?\+ ?youth|adult\+youth/.test(name)) {
+      PRICING_TABLE[pKey].bundlePrice = Number(t.price) || 0
+    } else if (/\+?extra youth/.test(name)) {
+      PRICING_TABLE[pKey].extraYouthPrice = Number(t.price) || 0
+    } else if (/youth/.test(name)) {
+      PRICING_TABLE[pKey].youthPrice = Number(t.price) || 0
+    } else {
+      PRICING_TABLE[pKey].adultPrice = Number(t.price) || 0
+    }
+  })
+  if (!selectedCats.has('Early Bird')) {
+    period = 'period2'
+  }
+  selectedPeriod.value = period
+
+  const list = []
+  orderStore.selectedTickets.forEach(ticket => {
+    for (let i = 0; i < ticket.qty; i++) {
+      const title = String(ticket.name).toLowerCase()
+      if (title.includes('adult + youth') || title.includes('adult+youth')) {
+        list.push(createEmptyParticipant('Adult (≥30 years old)', list.length === 0, ticket.eventTicketId))
+        list.push(createEmptyParticipant('Youth (<30 years old)', false, ticket.eventTicketId))
+      } else if (title.includes('youth')) {
+        list.push(createEmptyParticipant('Youth (<30 years old)', list.length === 0, ticket.eventTicketId))
+      } else {
+        list.push(createEmptyParticipant('Adult (≥30 years old)', list.length === 0, ticket.eventTicketId))
+      }
+    }
+  })
+  participants.value = list
 
   if (participants.value.length === 0) {
     participants.value = [createEmptyParticipant('Adult (≥30 years old)', true)]
   }
 
+  submitError.value = ''
   startTimer()
 })
 
@@ -758,7 +791,7 @@ const calculatedSavings = computed(() => {
 })
 
 const subtotalPrice = computed(() => pricingCalculation.value.subtotal)
-const totalPrice = computed(() => subtotalPrice.value + adminFee)
+const totalPrice = computed(() => subtotalPrice.value + adminFee + orderStore.ppnAmount)
 
 const getParticipantTierName = (index) => {
   const p = participants.value && participants.value[index]
@@ -837,7 +870,7 @@ const getParticipantError = (index, field) => {
   return !!errors[field]
 }
 
-const handleNextStep = () => {
+const handleNextStep = async () => {
   // Reset previous errors
   validationErrors.name = false
   validationErrors.email = false
@@ -893,8 +926,125 @@ const handleNextStep = () => {
     return
   }
 
-  isSubmitted.value = true
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  await submitTransaction()
+}
+
+const buildPayload = () => {
+  const event = orderStore.event
+
+  const tickets = orderStore.selectedTickets.map(t => ({
+    id: t.eventTicketId,
+    event_id: Number(event.id),
+    event_ticket_id: t.eventTicketId,
+    price: t.price,
+    ticket_fee: t.ticketFee || 0,
+    name: (t.raw && t.raw.name) || t.name,
+    subtotal_price: t.price * t.qty,
+    qty_ticket: t.qty,
+    payment_status: 'pending',
+    event_session_id: (t.raw && t.raw.event_session_id) || null,
+    is_insurance: 0,
+    insurance_amount: 0,
+    insurance_require: 0,
+    is_bundling: (t.raw && Number(t.raw.is_bundling)) || 0,
+    bundling_qty: (t.raw && Number(t.raw.bundling_qty)) || 0
+  }))
+
+  const identities = []
+  const firstTicketId = (participants.value[0] && participants.value[0].eventTicketId) || tickets[0].event_ticket_id
+
+  identities.push({
+    nik: '',
+    full_name: buyer.name,
+    email: buyer.email,
+    countryCode: buyer.countryCode.replace('+', ''),
+    no_telp: (buyer.countryCode.replace('+', '')) + buyer.phone,
+    is_pemesan: 1,
+    identity_type_id: 1,
+    event_ticket_id: firstTicketId
+  })
+
+  participants.value.forEach((p, i) => {
+    identities.push({
+      nik: '',
+      full_name: p.name,
+      email: p.email,
+      countryCode: p.countryCode.replace('+', ''),
+      no_telp: (p.countryCode.replace('+', '')) + p.phone,
+      is_pemesan: 0,
+      identity_type_id: 1,
+      event_ticket_id: p.eventTicketId || firstTicketId,
+      gender: '',
+      birthdate: '',
+      kelas: '',
+      assistant: '',
+      age: p.ageRange || '',
+      church: p.church || '',
+      ministry: p.ministryRole || '',
+      seat_number: ''
+    })
+  })
+
+  const expiration = new Date()
+  expiration.setHours(expiration.getHours() + 1)
+
+  return {
+    user_id: null,
+    event_id: Number(event.id),
+    admin_fee: adminFee,
+    payment_method: '4',
+    grandtotal: totalPrice.value,
+    ppn_type: orderStore.ppnType,
+    ppn: orderStore.ppn,
+    ppn_amount: orderStore.ppnAmount,
+    is_insurance: 0,
+    insurance_amount: 0,
+    insurance_total: 0,
+    insurance_required: 0,
+    identities,
+    tickets,
+    bank_code: '',
+    expiration_date: expiration.toISOString(),
+    vouchers: [],
+    is_merch: 0
+  }
+}
+
+const submitTransaction = async () => {
+  submitting.value = true
+  submitError.value = ''
+
+  try {
+    const payload = buildPayload()
+    const resp = await createTransaction(payload)
+
+    orderStore.buyerEmail = buyer.email
+    orderStore.invoiceNumber =
+      (resp && resp.data && (resp.data.invoice_id || resp.data.transaction_number || resp.data.id)) || ''
+
+    const invoiceUrl =
+      resp && resp.data && resp.data.xendit_invoice && resp.data.xendit_invoice.invoice_url
+        ? resp.data.xendit_invoice.invoice_url
+        : resp && resp.data && resp.data.payment_url
+          ? resp.data.payment_url
+          : resp && resp.xendit_invoice && resp.xendit_invoice.invoice_url
+            ? resp.xendit_invoice.invoice_url
+            : resp && resp.payment_url
+              ? resp.payment_url
+              : null
+
+    if (invoiceUrl) {
+      window.location.href = invoiceUrl
+    } else {
+      isSubmitted.value = true
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  } catch (e) {
+    submitError.value = e.message || 'Gagal memproses transaksi. Silakan coba lagi.'
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } finally {
+    submitting.value = false
+  }
 }
 
 const lottieContainer = ref(null)
@@ -1124,6 +1274,17 @@ const handleDownload = () => {
   font-weight: 800;
   margin-bottom: 1.8rem;
   color: #111827;
+}
+
+.submit-error-banner {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
 /* 2-Column Layout Grid */
