@@ -169,6 +169,7 @@ defineEmits(['select-ticket', 'open-tickets'])
   flex-direction: column;
   align-items: flex-start;
   min-height: 200px;
+  flex-grow: 1;
 }
 
 .ticket-title {
