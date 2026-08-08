@@ -79,11 +79,11 @@ const day2Schedule = [
   { time: '08.30 - 09.00', title: 'Welcome & Opening Worship' },
   { time: '09.00 - 10.20', title: 'Plenary 2: They’re Not Who You Think They Are' },
   { time: '10.20 - 10.30', title: 'Stretch Break' },
-  { time: '10.30 - 11.50', title: 'Plenary 3: Ministry for the Next Gen (talkshow)' },
+  { time: '10.30 - 11.50', title: 'Plenary 3: Ministry for the Next Gen - Talkshow' },
   { time: '11.50 - 13.20', title: 'Lunch' },
-  { time: '13.20 - 14.40', title: 'Workshop 1(5 Opsi Workshop)' },
+  { time: '13.20 - 14.40', title: 'Workshop 1 - 5 Workshop Tracks' },
   { time: '14.40 - 15.00', title: 'Stretch Break' },
-  { time: '15.00 - 16.30', title: 'Workshop 2 (5 Opsi Workshop)' },
+  { time: '15.00 - 16.30', title: 'Workshop 2 - 5 Workshop Tracks' },
   { time: '16.30 - 17.00', title: 'Snack & Networking' },
   { time: '17.00 - 17.50', title: 'Plenary 4: Now It’s Your Turn' }
 ]
