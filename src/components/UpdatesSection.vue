@@ -276,7 +276,7 @@ onMounted(() => {
   }
 
   .updates-title {
-    font-size: 1.6rem;
+    font-size: clamp(1.1rem, 4.5vw, 1.6rem);
     line-height: 1.2;
     letter-spacing: -0.01em;
     font-weight: 800;

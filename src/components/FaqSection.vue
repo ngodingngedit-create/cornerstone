@@ -128,7 +128,7 @@ const faqs = [
   {
     category: 'Registrasi & Tiket',
     question: 'Berapa harga tiket R2C?',
-    answer: 'Informasi mengenai harga tiket R2C dapat dilihat melalui halaman registrasi resmi kami <strong>https://r2c.cornerstone.co.id/pricing</strong>.'
+    answer: 'Informasi mengenai harga tiket R2C dapat dilihat melalui halaman registrasi resmi kami <strong>https://r2c.cornerstone.co.id/event/r2c</strong>.'
   },
   {
     category: 'Registrasi & Tiket',
