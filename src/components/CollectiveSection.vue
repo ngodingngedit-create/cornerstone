@@ -12,7 +12,7 @@
 
         <div class="cta-wrapper">
           <button @click="$emit('open-tickets')" class="btn-register-rrc font-tech">
-            REGISTER RRC27
+            REGISTER R2C27
           </button>
         </div>
       </div>

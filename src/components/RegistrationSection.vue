@@ -47,7 +47,7 @@
       <!-- Centered CTA Button -->
       <div class="cta-wrapper">
         <button @click="$emit('open-tickets')" class="btn-white-pill">
-          REGISTER RRC27
+          REGISTER R2C27
         </button>
       </div>
     </div>
