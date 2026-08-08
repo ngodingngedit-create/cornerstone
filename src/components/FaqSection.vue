@@ -103,12 +103,12 @@ const faqs = [
   {
     category: 'Tentang R2C',
     question: 'Untuk pertanyaan lainnya?',
-    answer: 'Untuk pertanyaan lainnya, Anda dapat menghubungi tim kami.'
+    answer: 'Hubungi tim kami melalui email rootedrelevantcollective@gmail.com atau WhatsApp 0811-2211-370'
   },
   {
     category: 'Jadwal & Transportasi',
     question: 'Kapan dan di mana R2C akan diselenggarakan?',
-    answer: 'R2C akan diselenggarakan pada <strong>19–20 Februari 2027</strong> di <strong>Cornerstone Bandung, Paskal 23</strong>.'
+    answer: 'R2C akan diselenggarakan pada <strong>19–20 Februari 2027</strong> di <strong><a href="https://maps.app.goo.gl/jD23cnzGPSKGQ6ec6" target="_blank" rel="noopener noreferrer">Cornerstone Bandung, Paskal 23</a></strong>.'
   },
   {
     category: 'Jadwal & Transportasi',
@@ -391,6 +391,17 @@ const toggleAccordion = (idx) => {
   font-size: 0.92rem;
   line-height: 1.75;
   color: #333333;
+}
+
+.answer-text :deep(a) {
+  color: #000000;
+  text-decoration: underline;
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+}
+
+.answer-text :deep(a:hover) {
+  opacity: 0.7;
 }
 
 /* Responsive Rules */
