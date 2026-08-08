@@ -35,7 +35,6 @@
               <a href="#" class="sidebar-link" @click.prevent="$router.push('/'); headerMenuOpen = false">HOME</a>
               <a href="#collective" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">COLLECTIVE</a>
               <a href="#agenda" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">PROGRAMS</a>
-              <a href="#speakers" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">SPEAKERS</a>
               <a href="#faq" class="sidebar-link" @click="$router.push('/'); headerMenuOpen = false">FAQ</a>
             </div>
           </div>

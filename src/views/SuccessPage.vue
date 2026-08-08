@@ -35,7 +35,6 @@
               <router-link to="/" class="sidebar-link" @click="headerMenuOpen = false">HOME</router-link>
               <a href="/#collective" class="sidebar-link" @click="headerMenuOpen = false">COLLECTIVE</a>
               <a href="/#agenda" class="sidebar-link" @click="headerMenuOpen = false">PROGRAMS</a>
-              <a href="/#speakers" class="sidebar-link" @click="headerMenuOpen = false">SPEAKERS</a>
               <a href="/#faq" class="sidebar-link" @click="headerMenuOpen = false">FAQ</a>
             </div>
           </div>

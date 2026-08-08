@@ -41,7 +41,6 @@
               <a href="#hero" class="sidebar-link" @click="mobileMenuOpen = false">HOME</a>
               <a href="#collective" class="sidebar-link" @click="mobileMenuOpen = false">COLLECTIVE</a>
               <a href="#agenda" class="sidebar-link" @click="mobileMenuOpen = false">PROGRAMS</a>
-              <a href="#speakers" class="sidebar-link" @click="mobileMenuOpen = false">SPEAKERS</a>
               <a href="#faq" class="sidebar-link" @click="mobileMenuOpen = false">FAQ</a>
             </div>
 
