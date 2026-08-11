@@ -86,7 +86,7 @@ defineEmits(['select-ticket', 'open-tickets'])
 
 /* Card Wrapper with Rectangle 9.png background */
 .registration-card-wrapper {
-  width: 100%;
+  width: 94%;
   max-width: 1320px;
   background-image: url('/Rectangle 9.avif');
   background-size: cover;
@@ -307,9 +307,16 @@ defineEmits(['select-ticket', 'open-tickets'])
 }
 
 /* Responsive Rules for Mobile and Tablet */
+@media (max-width: 1360px) {
+  .registration-card-wrapper {
+    width: 94%;
+  }
+}
+
 @media (max-width: 860px) {
   .registration-card-wrapper {
     padding: 2.5rem 1rem 0;
+    width: 94%;
   }
 
   .register-header {
@@ -335,6 +342,7 @@ defineEmits(['select-ticket', 'open-tickets'])
 
   .registration-card-wrapper {
     padding: 2rem 0.8rem 1.8rem;
+    width: 100%;
     border-radius: 0;
     margin-bottom: 0;
   }
@@ -342,15 +350,15 @@ defineEmits(['select-ticket', 'open-tickets'])
   .tickets-container {
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    max-width: 295px;
-    width: 100%;
-    margin-bottom: 1.5rem;
+    gap: 1.2rem;
+    max-width: 420px;
+    width: 92%;
+    margin-bottom: 2rem;
   }
 
   .ticket-card {
     width: 100%;
-    max-width: 285px;
+    max-width: 100%;
     min-width: 0;
   }
 

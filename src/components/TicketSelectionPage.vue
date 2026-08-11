@@ -89,8 +89,8 @@
                 :key="ticket.id" 
                 class="custom-ticket-card"
                 :class="{ 
-                  'ticket-locked': (ticket.requiresBundle && !canAddTicket(ticket)) || ticket.soldOut,
-                  'ticket-is-sold-out': ticket.soldOut 
+                  'ticket-locked': (ticket.requiresBundle && !canAddTicket(ticket)) || ticket.soldOut || !ticket.isStarted,
+                  'ticket-is-sold-out': ticket.soldOut || !ticket.isStarted 
                 }"
               >
                 <!-- Side Notches (Ticket Stub Effect) -->
@@ -213,6 +213,11 @@
                         Terjual Habis
                       </div>
 
+                      <!-- Not Started Yet Disabled Button -->
+                      <div v-else-if="!ticket.isStarted" class="btn-sold-out-disabled font-tech">
+                        Belum Dibuka
+                      </div>
+
                       <!-- Locked state notice for Extra Youth -->
                       <div v-else-if="ticket.requiresBundle && !canAddTicket(ticket)" class="locked-notice">
                         <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -240,7 +245,14 @@
                     </div>
 
                     <div class="expiry-block">
-                      <span class="expiry-label">Berakhir pada: <br class="expiry-break" /><strong class="expiry-val font-tech">{{ ticket.expiry }}</strong></span>
+                      <span v-if="ticket.isStarted" class="expiry-label">
+                        Berakhir pada: <br class="expiry-break" />
+                        <strong class="expiry-val font-tech">{{ ticket.expiry }}</strong>
+                      </span>
+                      <span v-else class="expiry-label">
+                        Mulai pada: <br class="expiry-break" />
+                        <strong class="expiry-val font-tech">{{ formatDate(ticket.startDate) }}</strong>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -542,6 +554,17 @@ const ageTextFor = (name) => {
   return 'Adult (≥30 years old)'
 }
 
+const formatDate = (dateStr) => {
+  if (!dateStr) return ''
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+  const parts = dateStr.split('-')
+  if (parts.length !== 3) return dateStr
+  const year = parts[0]
+  const month = months[parseInt(parts[1], 10) - 1] || parts[1]
+  const day = parseInt(parts[2], 10)
+  return `${day} ${month} ${year}`
+}
+
 const tempoIndex = {
   'Early Bird': 0,
   'Regular': 1,
@@ -582,6 +605,17 @@ onMounted(async () => {
         const isExtra = /\+?extra youth/i.test(title)
         const isYouth = /youth/i.test(title) && !isBundle
 
+        let startDateStr = t.ticket_date || ''
+        const isRegular = /regular|reguler/i.test(t.name)
+        if (isRegular) {
+          startDateStr = '2026-10-11'
+        }
+
+        let startTimeStr = t.starting_time || '00:00:00'
+        const startDateTime = new Date(`${startDateStr}T${startTimeStr}+07:00`)
+        const now = new Date()
+        const isStarted = now >= startDateTime
+
         return {
           id: t.id,
           eventTicketId: t.id,
@@ -595,6 +629,8 @@ onMounted(async () => {
           calMonth: '',
           validityText: period,
           expiry: t.ticket_end || '',
+          startDate: startDateStr,
+          isStarted: isStarted,
           ageText: ageTextFor(t.name),
           qty: 0,
           soldOut: isSoldOut(t),
@@ -641,6 +677,7 @@ const allTickets = computed(() => {
 // Validation: +Extra Youth* can only be added if parent bundle qty > 0 and ticket is not sold out
 const canAddTicket = (ticket) => {
   if (ticket.soldOut) return false
+  if (!ticket.isStarted) return false
   if (!ticket.requiresBundle) return true
   const parent = allTickets.value.find(t => t.id === ticket.parentBundleId)
   return parent ? parent.qty > 0 : false
@@ -656,6 +693,7 @@ const toggleTicketDetails = (id) => {
 
 const updateQty = (ticket, newQty) => {
   if (ticket.soldOut) return
+  if (!ticket.isStarted) return
   const targetQty = Math.max(0, newQty)
   if (targetQty > ticket.qty && !canAddTicket(ticket)) {
     return

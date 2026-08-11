@@ -14,9 +14,6 @@
 
         <!-- Overhanging Black Filmstrip Strip (Extending 100vw full width edge-to-edge) -->
         <div class="filmstrip-overhang-container">
-          <!-- Top Sprocket Holes Bar (Infinite CSS Gradient Pattern) -->
-          <div class="sprocket-holes-bar"></div>
-
           <!-- Horizontal Scrollable Photos Row -->
           <div class="filmstrip-photos-row">
             <!-- Instagram Embed 1 (Reel) -->
@@ -39,9 +36,6 @@
               <img :src="photo.url" :alt="photo.caption" class="film-img" />
             </div>
           </div>
-
-          <!-- Bottom Sprocket Holes Bar (Infinite CSS Gradient Pattern) -->
-          <div class="sprocket-holes-bar"></div>
         </div>
 
         <!-- White Footer Block Extension -->
@@ -157,21 +151,6 @@ onMounted(() => {
   z-index: 10;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
   border-radius: 0;
-}
-
-/* Sprocket Holes Bar (Infinite CSS Gradient Pattern across 100% full width) */
-.sprocket-holes-bar {
-  width: 100%;
-  height: 14px;
-  background-color: #000000;
-  background-image: repeating-linear-gradient(
-    90deg,
-    #ffffff 0px,
-    #ffffff 10px,
-    transparent 10px,
-    transparent 22px
-  );
-  margin: 0.3rem 0;
 }
 
 /* Horizontal Scrollable Photos Row */
@@ -305,17 +284,6 @@ onMounted(() => {
   .film-photo-card {
     flex: 0 0 180px;
     height: 155px;
-  }
-
-  .sprocket-holes-bar {
-    height: 9px;
-    background-image: repeating-linear-gradient(
-      90deg,
-      #ffffff 0px,
-      #ffffff 6px,
-      transparent 6px,
-      transparent 14px
-    );
   }
 }
 </style>

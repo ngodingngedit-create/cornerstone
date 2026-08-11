@@ -50,7 +50,8 @@
         <span class="tab-label">Schedule</span>
       </a>
 
-      <!-- Speakers Link -->
+      <!-- Speakers Link (Temporarily hidden) -->
+      <!--
       <a 
         href="#speakers" 
         class="nav-tab-item"
@@ -65,6 +66,7 @@
         </svg>
         <span class="tab-label">Speakers</span>
       </a>
+      -->
 
       <!-- Register / Ticket Button -->
       <div 

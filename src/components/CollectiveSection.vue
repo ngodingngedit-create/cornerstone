@@ -18,7 +18,7 @@
       </div>
 
       <!-- Right Side: 4 Frame Images Collage Gid -->
-      <div class="collective-right">
+      <div class="collective-right" :class="{ 'zoom-90': isZoomedOut }">
         <div class="collage-image-container">
           <div class="collage-absolute-wrapper">
             <!-- Frame 19: BRANDED Panel Top Left -->
@@ -79,8 +79,7 @@ defineEmits(['open-tickets'])
 
 const sectionRef = ref(null)
 const parallaxOffset = ref(0)
-const isSnapped = ref(false)
-let isSnapping = false
+const isZoomedOut = ref(false)
 
 const handleScroll = () => {
   if (!sectionRef.value) return
@@ -112,35 +111,27 @@ const handleScroll = () => {
   if (rect.top < windowHeight && rect.top > targetTop + 5) {
     const scrollProgress = Math.min(1, Math.max(0, currentScrollY / 220))
     parallaxOffset.value = -200 * Math.sin(scrollProgress * Math.PI)
-
-    // Auto-pull full page section when scrolled partially into view
-    if (currentScrollY > 80 && rect.top > targetTop + 20 && !isSnapped.value && !isSnapping) {
-      isSnapping = true
-      isSnapped.value = true
-      
-      const targetY = sectionRef.value.offsetTop - targetTop
-      window.scrollTo({
-        top: targetY,
-        behavior: 'smooth'
-      })
-
-      setTimeout(() => {
-        isSnapping = false
-      }, 850)
-    }
-
-    if (currentScrollY < 10 || rect.top > windowHeight * 0.95 || rect.bottom < windowHeight * 0.1) {
-      isSnapped.value = false
-    }
   }
+}
+
+const checkZoom = () => {
+  if (window.innerWidth < 900) {
+    isZoomedOut.value = false
+    return
+  }
+  const ratio = window.outerWidth / window.innerWidth
+  isZoomedOut.value = ratio <= 0.93 // Active on 90% zoom or lower on desktop
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
+  checkZoom()
+  window.addEventListener('resize', checkZoom)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', checkZoom)
 })
 </script>
 
@@ -156,6 +147,7 @@ onUnmounted(() => {
 }
 
 .collective-container {
+  max-width: 1430px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1.6fr; /* Adjusted for wider right column */
@@ -165,7 +157,7 @@ onUnmounted(() => {
 
 /* Left Column Styling */
 .collective-left {
-  padding: 3.5rem 1.5vw 1.5rem 3vw;
+  padding: 3.5rem 2% 1.5rem 4%; /* Converted horizontal margins from vw to percentages to stabilize zoom */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -227,9 +219,10 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   align-items: center;
-  padding-left: 1vw;
+  padding-left: 3.5%; /* Converted padding-left from vw to percentage to stabilize zoom */
   margin-top: 0;
   z-index: 15;
+  transform: translateX(45px); /* Shifted slightly to the right on desktop 100% zoom */
 }
 
 .collage-image-container {
@@ -347,6 +340,7 @@ onUnmounted(() => {
 @media (max-width: 1180px) {
   .collective-right {
     padding-left: 0.5rem;
+    transform: translateX(0); /* Reset translate on tablet layout */
   }
   .floating-sky-tag {
     left: -35px;
@@ -373,6 +367,7 @@ onUnmounted(() => {
     padding-left: 0;
     margin-top: 0;
     flex-direction: column;
+    transform: translateX(0); /* Reset translate on mobile layout */
   }
 
   .collage-absolute-wrapper {
@@ -429,16 +424,22 @@ onUnmounted(() => {
     position: absolute;
     left: -10px;
     bottom: -10px;
-    width: 125px;
-    padding: 0.7rem 0.5rem 0.6rem;
+    width: 112px;
+    padding: 0.65rem 0.45rem 0.55rem;
     margin: 0;
     transform: rotate(-3deg);
     border-radius: 3px;
   }
 
-  .tag-dates { font-size: 0.95rem; margin-bottom: 0.1rem; }
-  .tag-month { font-size: 0.75rem; }
-  .tag-year { font-size: 0.8rem; margin-bottom: 0.2rem; }
-  .tag-location { font-size: 0.68rem; line-height: 1.15; }
+  .tag-dates { font-size: 0.85rem; margin-bottom: 0.1rem; }
+  .tag-month { font-size: 0.68rem; }
+  .tag-year { font-size: 0.72rem; margin-bottom: 0.2rem; }
+  .tag-location { font-size: 0.62rem; line-height: 1.15; }
+}
+
+/* Wide screen viewport styles triggered when zoomed out to 90% (viewport > 1920px) */
+.collective-right.zoom-90 {
+  transform: translateX(140px); /* Shift rightwards when zoomed out */
 }
 </style>
+

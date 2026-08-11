@@ -13,7 +13,6 @@
             @click="activeDay = 1"
           >
             <span class="tab-label font-display">DAY 1</span>
-            <span v-if="activeDay === 1" class="tab-line"></span>
           </button>
 
           <button 
@@ -22,7 +21,6 @@
             @click="activeDay = 2"
           >
             <span class="tab-label font-display">DAY 2</span>
-            <span v-if="activeDay === 2" class="tab-line"></span>
           </button>
         </div>
 
@@ -144,27 +142,28 @@ const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : da
 /* Tabs Header Row */
 .tabs-header-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 1rem;
   margin-left: 2rem;
-  margin-bottom: -0.2rem;
+  margin-bottom: -0.15rem;
   position: relative;
   z-index: 5;
 }
 
 .tab-box {
-  padding: 0.6rem 2.2rem 0.5rem;
+  padding: 0.6rem 1.6rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   border: none;
-  border-radius: 4px;
+  border-radius: 0px;
   position: relative;
   background: rgba(70, 58, 52, 0.75);
   backdrop-filter: blur(8px);
   transition: all 0.25s ease;
+  transform: translateY(-0.15rem);
 }
 
 .tab-box.is-active {
@@ -183,13 +182,6 @@ const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : da
 
 .tab-box:not(.is-active) .tab-label {
   opacity: 0.95;
-}
-
-.tab-line {
-  width: 100%;
-  height: 2px;
-  background: #ffffff;
-  margin-top: 0.4rem;
 }
 
 /* Outer Border Frame using Rectangle 201.avif background image */
@@ -300,6 +292,7 @@ const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : da
     width: 100%;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    align-items: flex-end;
   }
 
   .tabs-header-row::-webkit-scrollbar {
@@ -307,9 +300,10 @@ const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : da
   }
 
   .tab-box {
-    padding: 0.45rem 1.3rem 0.35rem;
+    padding: 0.45rem 1.0rem 0.35rem;
     flex: 0 0 auto;
     white-space: nowrap;
+    transform: translateY(-0.07rem);
   }
 
   .tab-label {
@@ -334,6 +328,27 @@ const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : da
   .title-column {
     font-size: 0.82rem;
     line-height: 1.35;
+  }
+}
+
+@media (max-width: 480px) {
+  .agenda-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.9rem 0.8rem;
+    gap: 0.3rem;
+  }
+
+  .time-column {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-bright-cyan);
+  }
+
+  .title-column {
+    font-size: 0.95rem;
+    line-height: 1.45;
   }
 }
 </style>

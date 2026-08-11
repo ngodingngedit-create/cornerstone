@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar-header" :class="{ 'scrolled': isScrolled }">
+  <header class="navbar-header" :class="{ 'scrolled': isScrolled, 'zoom-90': isZoomedOut }">
     <div class="nav-container">
       <!-- Logo Image Left -->
       <a href="#" class="logo-link">
@@ -64,17 +64,30 @@ defineEmits(['open-tickets'])
 
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
+const isZoomedOut = ref(false)
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 40
 }
 
+const checkZoom = () => {
+  if (window.innerWidth < 900) {
+    isZoomedOut.value = false
+    return
+  }
+  const ratio = window.outerWidth / window.innerWidth
+  isZoomedOut.value = ratio <= 0.93 // Active on 90% zoom or lower on desktop
+}
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  checkZoom()
+  window.addEventListener('resize', checkZoom)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', checkZoom)
 })
 </script>
 
@@ -85,7 +98,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 1.1rem 2rem;
+  padding: 1.1rem 0; /* Desktop padding-top/bottom only, horizontal padding delegated to container */
   transition: all 0.3s ease;
   background: #000000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -93,28 +106,32 @@ onUnmounted(() => {
 }
 
 .navbar-header.scrolled {
-  padding: 0.8rem 2rem;
+  padding: 1.1rem 0; /* Keep padding constant to prevent bottom edge shifting */
   background: #000000;
   border-bottom-color: rgba(255, 255, 255, 0.18);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
 }
 
 .nav-container {
+  width: 100%;
   max-width: 1430px;
   margin: 0 auto;
+  padding: 0 2rem; /* Handles horizontal padding so content aligns with grid */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .logo-link {
   display: flex;
   align-items: center;
   text-decoration: none;
+  transition: transform 0.25s ease;
 }
 
 .logo-img {
-  height: 38px;
+  height: 46px;
   width: auto;
   object-fit: contain;
   transition: transform 0.25s ease, height 0.25s ease;
@@ -127,6 +144,8 @@ onUnmounted(() => {
 .desktop-menu {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex: 1;
 }
 
 .btn-register-now {
@@ -143,8 +162,8 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  transition: all 0.25s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .btn-register-now .arrow {
@@ -184,6 +203,10 @@ onUnmounted(() => {
     padding: 0.75rem 1rem;
   }
 
+  .navbar-header.scrolled {
+    padding: 0.75rem 1rem; /* Constant padding on mobile scrolled state */
+  }
+
   .logo-img {
     height: 28px; /* Compact mobile logo size */
   }
@@ -197,6 +220,19 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
   }
+
+  .nav-container {
+    padding: 0; /* Reset container padding on mobile to rely on parent header padding */
+  }
+}
+
+/* Wide screen viewport styles triggered when zoomed out to 90% (viewport > 1920px) */
+.navbar-header.zoom-90 .logo-link {
+  transform: translateX(-80px); /* Shift logo leftwards when zoomed out */
+}
+
+.navbar-header.zoom-90 .btn-register-now {
+  transform: translateX(80px); /* Shift button rightwards when zoomed out */
 }
 </style>
 
