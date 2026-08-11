@@ -343,7 +343,7 @@ const currentSchedule = computed(() => activeDay.value === 1 ? day1Schedule : da
   .time-column {
     font-size: 0.82rem;
     font-weight: 700;
-    color: var(--color-bright-cyan);
+    color: #ffffff;
   }
 
   .title-column {
