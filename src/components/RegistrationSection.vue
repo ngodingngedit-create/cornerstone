@@ -56,11 +56,7 @@
     <div class="bottom-marquee-bar">
       <div class="marquee-track">
         <div class="marquee-content" v-for="i in 4" :key="i">
-          <span>EARLY BIRD</span>
-          <span class="star-icon">✸</span>
-          <span>AVAILABLE FROM <strong>9 AUGUST TO 10 OCTOBER 2026</strong></span>
-          <span class="star-icon">✸</span>
-          <span>SPECIAL PRICE AVAILABLE FOR GROUP</span>
+          <span>Early bird available from 9 August - 10 October 2026</span>
           <span class="star-icon">✸</span>
         </div>
       </div>
