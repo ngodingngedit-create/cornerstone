@@ -13,8 +13,8 @@
           playsinline
           preload="auto"
         >
-          <source src="/videos/hero.webm" type="video/webm" />
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          <!-- <source src="/videos/hero.webm" type="video/webm" /> -->
+          <source src="/videos/home.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -23,6 +23,26 @@
       <div ref="posterOverlayRef" class="poster-overlay">
         <img :src="heroImg" alt="R2C27 Hero Banner - Next Is Now" class="poster-full-img" />
       </div>
+
+      <!-- Volume control button -->
+      <button 
+        ref="volumeBtnRef"
+        @click="toggleMute" 
+        class="volume-toggle-btn"
+        :aria-label="isMuted ? 'Unmute video' : 'Mute video'"
+      >
+        <!-- Icon: volume-x (muted) or volume-2 (unmuted) -->
+        <svg v-if="isMuted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="volume-icon">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="22" y1="9" x2="16" y2="15"></line>
+          <line x1="16" y1="9" x2="22" y2="15"></line>
+        </svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="volume-icon">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      </button>
     </div>
   </section>
 </template>
@@ -39,6 +59,16 @@ gsap.registerPlugin(ScrollTrigger)
 const heroSectionRef = ref(null)
 const videoRef = ref(null)
 const posterOverlayRef = ref(null)
+const volumeBtnRef = ref(null)
+
+const isMuted = ref(true)
+
+const toggleMute = () => {
+  if (videoRef.value) {
+    videoRef.value.muted = !videoRef.value.muted
+    isMuted.value = videoRef.value.muted
+  }
+}
 
 let scrollTimeline = null
 let mobileAutoplayTimeout = null
@@ -61,6 +91,11 @@ onMounted(() => {
             })
           }
         }
+      })
+      gsap.to(volumeBtnRef.value, {
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power1.inOut'
       })
     }, 2500)
 
@@ -132,7 +167,13 @@ onMounted(() => {
       scale: 1.12,
       opacity: 0,
       ease: 'power1.inOut'
-    })
+    }, 0)
+
+    // Fade in volume button in sync with the poster overlay fade out
+    scrollTimeline.to(volumeBtnRef.value, {
+      opacity: 1,
+      ease: 'power1.inOut'
+    }, 0)
   }
 })
 
@@ -213,6 +254,45 @@ onUnmounted(() => {
   transform-origin: center center;
 }
 
+/* Volume control button matching the play button border & simple circular styling */
+.volume-toggle-btn {
+  position: absolute;
+  bottom: 5.5%;
+  right: 4.5%;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0; /* Start hidden, animated by GSAP in sync with poster overlay fadeout */
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  padding: 0;
+  color: #ffffff;
+  outline: none;
+}
+
+.volume-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+}
+
+.volume-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.volume-icon {
+  width: 20px;
+  height: 20px;
+  stroke: #ffffff;
+  stroke-width: 1.75;
+}
+
 /* Responsive adjustment rules for mobile viewports */
 @media (max-width: 900px) {
   .hero-section {
@@ -231,6 +311,18 @@ onUnmounted(() => {
 
   .poster-full-img {
     transform: scale(1.0); /* Reset scale on mobile */
+  }
+
+  .volume-toggle-btn {
+    width: 32px;
+    height: 32px;
+    bottom: 5%;
+    right: 5%;
+  }
+
+  .volume-icon {
+    width: 14px;
+    height: 14px;
   }
 }
 </style>
